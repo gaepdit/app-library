@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## [5.5.0] - 2025-01-28
 
-- Updated to .NET 9.
+- Added support for .NET 9.
 
 ## [5.4.0] - 2025-01-09
 
@@ -109,6 +109,7 @@
 
 _Initial release._
 
+[5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
 [5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
 [5.3.1]: https://github.com/gaepdit/app-library/releases/tag/v5.3.1
 [5.3.0]: https://github.com/gaepdit/app-library/releases/tag/v5.3.0
