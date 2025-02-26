@@ -27,13 +27,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="../../CHANGELOG.md" Pack="false" PackagePath="/"/>
-        <None Include="../../LICENSE" Pack="true" PackagePath=""/>
+        <None Include="../../CHANGELOG.md" Pack="false" PackagePath="/" />
+        <None Include="../../LICENSE" Pack="true" PackagePath="" />
         <None Include="../../README.md">
             <Pack>True</Pack>
             <PackagePath>/</PackagePath>
         </None>
-        <None Include="../assets/epd-icon-tile.png" Pack="true" PackagePath="/"/>
+        <None Include="../assets/epd-icon-tile.png" Pack="true" PackagePath="/" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -42,22 +42,22 @@
 
     <ItemGroup>
         <PackageReference Include="GaEpd.GuardClauses" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
         <PackageReference Include="Microsoft.SourceLink.GitHub">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="SonarAnalyzer.CSharp">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.Linq.Dynamic.Core"/>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <PackageReference Include="System.Linq.Dynamic.Core" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
     <Target Name="PrepareReleaseNotes" BeforeTargets="GenerateNuspec">
         <ReadLinesFromFile File="../../CHANGELOG.md">
-            <Output TaskParameter="Lines" ItemName="ReleaseNotes"/>
+            <Output TaskParameter="Lines" ItemName="ReleaseNotes" />
         </ReadLinesFromFile>
         <PropertyGroup>
             <PackageReleaseNotes>@(ReleaseNotes, '%0a')</PackageReleaseNotes>
