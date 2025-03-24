@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.6.0] - 2025-03-24
+
+- Added two utility methods to help with retrieving data from an API:
+    - `UriCombine()` combines a base URI and path while correctly handling path separators.
+    - `FetchApiDataAsync<T>()` fetches JSON data from an API endpoint and serializes it to a target type.
+
 ## [5.5.0] - 2025-01-28
 
 - Added support for .NET 9.
@@ -109,6 +115,7 @@
 
 _Initial release._
 
+[5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
 [5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
 [5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
 [5.3.1]: https://github.com/gaepdit/app-library/releases/tag/v5.3.1
