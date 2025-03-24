@@ -4,63 +4,63 @@ namespace AppLibrary.Tests.ApiUtilityTests;
 
 public class UrlCombineTests
 {
-    private const string BaseUri = "https://localhost";
-    private const string BaseUriWithTrailingSlash = "https://localhost/";
+    private const string BaseUrl = "https://localhost";
+    private const string BaseUrlWithTrailingSlash = "https://localhost/";
     private const string Path = "path";
     private const string PathWithLeadingSlash = "/path";
 
     private const string ExpectedResultWithoutPath = "https://localhost";
     private const string ExpectedResultWithPath = "https://localhost/path";
 
-    [TestCase(BaseUri, Path)]
-    [TestCase(BaseUriWithTrailingSlash, Path)]
-    [TestCase(BaseUri, PathWithLeadingSlash)]
-    [TestCase(BaseUriWithTrailingSlash, PathWithLeadingSlash)]
-    public void UrlCombine_WithValidSegments_ReturnsCombinedUri(string baseUri, string? relativeUri)
+    [TestCase(BaseUrl, Path)]
+    [TestCase(BaseUrlWithTrailingSlash, Path)]
+    [TestCase(BaseUrl, PathWithLeadingSlash)]
+    [TestCase(BaseUrlWithTrailingSlash, PathWithLeadingSlash)]
+    public void UrlCombine_WithValidSegments_ReturnsCombinedUrl(string baseUrl, string? relativeUrl)
     {
-        ApiUtilities.UrlCombine(new Uri(baseUri), relativeUri)
+        ApiUtilities.UrlCombine(new Uri(baseUrl), relativeUrl)
             .Should().Be(new Uri(ExpectedResultWithPath));
     }
 
-    [TestCase(BaseUri, Path)]
-    [TestCase(BaseUriWithTrailingSlash, Path)]
-    [TestCase(BaseUri, PathWithLeadingSlash)]
-    [TestCase(BaseUriWithTrailingSlash, PathWithLeadingSlash)]
-    public void UrlCombine_WithValidSegments_AsStrings_ReturnsCombinedUri(string baseUri, string? relativeUri)
+    [TestCase(BaseUrl, Path)]
+    [TestCase(BaseUrlWithTrailingSlash, Path)]
+    [TestCase(BaseUrl, PathWithLeadingSlash)]
+    [TestCase(BaseUrlWithTrailingSlash, PathWithLeadingSlash)]
+    public void UrlCombine_WithValidSegments_AsStrings_ReturnsCombinedUrl(string baseUrl, string? relativeUrl)
     {
-        ApiUtilities.UrlCombine(baseUri, relativeUri)
+        ApiUtilities.UrlCombine(baseUrl, relativeUrl)
             .Should().Be(new Uri(ExpectedResultWithPath));
     }
 
-    [TestCase(BaseUri)]
-    [TestCase(BaseUriWithTrailingSlash)]
-    public void UrlCombine_WithNullPath_ReturnsBaseUri(string baseUri)
+    [TestCase(BaseUrl)]
+    [TestCase(BaseUrlWithTrailingSlash)]
+    public void UrlCombine_WithNullPath_ReturnsBaseUrl(string baseUrl)
     {
-        ApiUtilities.UrlCombine(new Uri(baseUri), null)
+        ApiUtilities.UrlCombine(new Uri(baseUrl), null)
             .Should().Be(new Uri(ExpectedResultWithoutPath));
     }
 
-    [TestCase(BaseUri)]
-    [TestCase(BaseUriWithTrailingSlash)]
-    public void UrlCombine_WithStringBase_AndNullPath_ReturnsBaseUri(string baseUri)
+    [TestCase(BaseUrl)]
+    [TestCase(BaseUrlWithTrailingSlash)]
+    public void UrlCombine_WithStringBase_AndNullPath_ReturnsBaseUrl(string baseUrl)
     {
-        ApiUtilities.UrlCombine(baseUri, null)
+        ApiUtilities.UrlCombine(baseUrl, null)
             .Should().Be(new Uri(ExpectedResultWithoutPath));
     }
 
-    [TestCase(BaseUri)]
-    [TestCase(BaseUriWithTrailingSlash)]
-    public void UrlCombine_WithEmptyPath_ReturnsBaseUri(string baseUri)
+    [TestCase(BaseUrl)]
+    [TestCase(BaseUrlWithTrailingSlash)]
+    public void UrlCombine_WithEmptyPath_ReturnsBaseUrl(string baseUrl)
     {
-        ApiUtilities.UrlCombine(new Uri(baseUri), "")
+        ApiUtilities.UrlCombine(new Uri(baseUrl), "")
             .Should().Be(new Uri(ExpectedResultWithoutPath));
     }
 
-    [TestCase(BaseUri)]
-    [TestCase(BaseUriWithTrailingSlash)]
-    public void UrlCombine_WithStringBase_AndEmptyPath_ReturnsBaseUri(string baseUri)
+    [TestCase(BaseUrl)]
+    [TestCase(BaseUrlWithTrailingSlash)]
+    public void UrlCombine_WithStringBase_AndEmptyPath_ReturnsBaseUrl(string baseUrl)
     {
-        ApiUtilities.UrlCombine(baseUri, "")
+        ApiUtilities.UrlCombine(baseUrl, "")
             .Should().Be(new Uri(ExpectedResultWithoutPath));
     }
 

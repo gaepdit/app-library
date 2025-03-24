@@ -15,6 +15,20 @@ public static class ApiUtilities
     /// <param name="clientName">A logical name for the <see cref="T:System.Net.Http.HttpClient" />.</param>
     /// <typeparam name="T">The target type to deserialize the API data to.</typeparam>
     /// <returns>API data deserialized to the target type.</returns>
+    public static Task<T?> FetchApiDataAsync<T>(this IHttpClientFactory httpClientFactory, string apiUrl,
+        string endpointPath, string clientName = "") =>
+        httpClientFactory.FetchApiDataAsync<T>(new Uri(Guard.NotNullOrWhiteSpace(apiUrl)), endpointPath, clientName);
+
+    /// <summary>
+    /// Fetches JSON data from an API endpoint and deserializes it to the target type.
+    /// This method does not handle authentication.
+    /// </summary>
+    /// <param name="httpClientFactory">The <see cref="T:System.Net.Http.IHttpClientFactory" /> available in your app.</param>
+    /// <param name="apiUrl">The base URL for the API to connect to.</param>
+    /// <param name="endpointPath">The relative path for the API endpoint to connect to.</param>
+    /// <param name="clientName">A logical name for the <see cref="T:System.Net.Http.HttpClient" />.</param>
+    /// <typeparam name="T">The target type to deserialize the API data to.</typeparam>
+    /// <returns>API data deserialized to the target type.</returns>
     public static async Task<T?> FetchApiDataAsync<T>(this IHttpClientFactory httpClientFactory,
         Uri apiUrl, string endpointPath, string clientName = "")
     {
