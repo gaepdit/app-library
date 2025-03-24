@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.6.1] - 2025-03-24
+
+- Added an overload to the `FetchApiDataAsync` method.
+
 ## [5.6.0] - 2025-03-24
 
 - Added two utility methods to help with retrieving data from an API:
@@ -115,6 +119,7 @@
 
 _Initial release._
 
+[5.6.1]: https://github.com/gaepdit/app-library/releases/tag/v5.6.1
 [5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
 [5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
 [5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
