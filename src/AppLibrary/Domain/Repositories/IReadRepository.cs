@@ -14,79 +14,47 @@ public interface IReadRepository<TEntity, in TKey> : IDisposable, IAsyncDisposab
     where TKey : IEquatable<TKey>
 {
     /// <summary>
-    /// Returns the <see cref="IEntity{TKey}"/> with the given <paramref name="id"/>.
-    /// </summary>
-    /// <param name="id">The ID of the entity.</param>
-    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
-    /// <exception cref="EntityNotFoundException{TEntity}">Thrown if no entity exists with the given ID.</exception>
-    /// <returns>An entity.</returns>
-    Task<TEntity> GetAsync(TKey id, CancellationToken token = default);
-
-    /// <summary>
     /// Returns the <see cref="TEntity"/> with the given <paramref name="id"/>.
     /// </summary>
     /// <param name="id">The ID of the entity.</param>
-    /// <param name="includeProperties">Navigation properties to include (when using an Entity Framework repository).</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <exception cref="EntityNotFoundException{TEntity}">Thrown if no entity exists with the given ID.</exception>
     /// <returns>An entity.</returns>
-    Task<TEntity> GetAsync(TKey id, string[] includeProperties, CancellationToken token = default);
-
-    /// <summary>
-    /// Returns the <see cref="IEntity{TKey}"/> with the given <paramref name="id"/>.
-    /// Returns null if no entity exists with the given ID.
-    /// </summary>
-    /// <param name="id">The ID of the entity.</param>
-    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
-    /// <returns>An entity or null.</returns>
-    Task<TEntity?> FindAsync(TKey id, CancellationToken token = default);
+    Task<TEntity> GetAsync(TKey id, string[]? includeProperties = null, CancellationToken token = default);
 
     /// <summary>
     /// Returns the <see cref="TEntity"/> matching the given <paramref name="id"/>.
     /// Returns null if there are no matches.
     /// </summary>
     /// <param name="id">The ID of the entity.</param>
-    /// <param name="includeProperties">Navigation properties to include (when using an Entity Framework repository).</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <exception cref="InvalidOperationException">Thrown if there are multiple matches.</exception>
     /// <returns>An entity or null.</returns>
-    Task<TEntity?> FindAsync(TKey id, string[] includeProperties, CancellationToken token = default);
+    Task<TEntity?> FindAsync(TKey id, string[]? includeProperties = null, CancellationToken token = default);
 
     /// <summary>
     /// Returns a single <see cref="IEntity{TKey}"/> matching the conditions of the <paramref name="predicate"/>.
     /// Returns null if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <exception cref="InvalidOperationException">Thrown if there are multiple matches.</exception>
     /// <returns>An entity or null.</returns>
-    Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default);
+    Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[]? includeProperties = null,
+        CancellationToken token = default);
 
     /// <summary>
     /// Returns a read-only collection of all <see cref="IEntity{TKey}"/> values.
     /// Returns an empty collection if none exist.
     /// </summary>
+    /// <param name="ordering">An optional expression string to indicate values to order by.</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetListAsync(CancellationToken token = default);
-
-    /// <summary>
-    /// Returns a read-only collection of all <see cref="IEntity{TKey}"/> values.
-    /// Returns an empty collection if none exist.
-    /// </summary>
-    /// <param name="ordering">An expression string to indicate values to order by.</param>
-    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
-    /// <returns>A read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetListAsync(string ordering, CancellationToken token = default);
-
-    /// <summary>
-    /// Returns a read-only collection of <see cref="IEntity{TKey}"/> matching the conditions of the <paramref name="predicate"/>.
-    /// Returns an empty collection if there are no matches.
-    /// </summary>
-    /// <param name="predicate">The search conditions.</param>
-    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
-    /// <returns>A read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
+    Task<IReadOnlyCollection<TEntity>> GetListAsync(string? ordering = null, string[]? includeProperties = null,
         CancellationToken token = default);
 
     /// <summary>
@@ -94,11 +62,12 @@ public interface IReadRepository<TEntity, in TKey> : IDisposable, IAsyncDisposab
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
-    /// <param name="ordering">An expression string to indicate values to order by.</param>
+    /// <param name="ordering">An optional expression string to indicate values to order by.</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, string ordering,
-        CancellationToken token = default);
+    Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, string? ordering = null,
+        string[]? includeProperties = null, CancellationToken token = default);
 
     /// <summary>
     /// Returns a filtered, read-only collection of <see cref="IEntity{TKey}"/> matching the conditions of the
@@ -106,41 +75,21 @@ public interface IReadRepository<TEntity, in TKey> : IDisposable, IAsyncDisposab
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
     /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A sorted and paged read-only collection of entities.</returns>
     Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
-        PaginatedRequest paging, CancellationToken token = default);
-
-    /// <summary>
-    /// Returns a filtered, read-only collection of <see cref="IEntity{TKey}"/> matching the conditions of the
-    /// <paramref name="predicate"/>. Returns an empty collection if there are no matches.
-    /// </summary>
-    /// <param name="predicate">The search conditions.</param>
-    /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
-    /// <param name="includeProperties">Navigation properties to include (when using an Entity Framework repository).</param>
-    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
-    /// <returns>A sorted and paged read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
-        PaginatedRequest paging, string[] includeProperties, CancellationToken token = default);
+        PaginatedRequest paging, string[]? includeProperties = null, CancellationToken token = default);
 
     /// <summary>
     /// Returns a filtered, read-only collection of all <see cref="IEntity{TKey}"/> values.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
+    /// <param name="includeProperties">Optional navigation properties to include (when using an Entity Framework repository).</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A sorted and paged read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, CancellationToken token = default);
-
-    /// <summary>
-    /// Returns a filtered, read-only collection of all <see cref="IEntity{TKey}"/> values.
-    /// Returns an empty collection if there are no matches.
-    /// </summary>
-    /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
-    /// <param name="includeProperties">Navigation properties to include (when using an Entity Framework repository).</param>
-    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
-    /// <returns>A sorted and paged read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, string[] includeProperties,
+    Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, string[]? includeProperties = null,
         CancellationToken token = default);
 
     /// <summary>

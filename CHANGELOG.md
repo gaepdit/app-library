@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Breaking:** Reduced the number of overloads in the `IReadRepository` interface by using more optional parameters.
+  (This may require rewriting calls to the read repository methods.)
+- Added optional `includeProperties` parameters to the `GetListAsync()` repository methods.
+
 ## [5.6.1] - 2025-03-24
 
 - Added an overload to the `FetchApiDataAsync` method.
