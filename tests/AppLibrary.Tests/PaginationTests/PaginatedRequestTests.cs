@@ -13,14 +13,12 @@ public class PaginatedRequestTests
 
         var pagination = new PaginatedRequest(pageNumber, pageSize, sorting);
 
-        Assert.Multiple(() =>
-        {
-            pagination.PageSize.Should().Be(pageSize);
-            pagination.PageNumber.Should().Be(pageNumber);
-            pagination.Sorting.Should().Be(sorting);
-            pagination.Skip.Should().Be((pageNumber - 1) * pageSize);
-            pagination.Take.Should().Be(pageSize);
-        });
+        using var scope = new AssertionScope();
+        pagination.PageSize.Should().Be(pageSize);
+        pagination.PageNumber.Should().Be(pageNumber);
+        pagination.Sorting.Should().Be(sorting);
+        pagination.Skip.Should().Be((pageNumber - 1) * pageSize);
+        pagination.Take.Should().Be(pageSize);
     }
 
     [Test]

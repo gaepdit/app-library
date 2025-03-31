@@ -4,6 +4,6 @@ namespace GaEpd.AppLibrary.Pagination;
 
 public static class Sorting
 {
-    public static IOrderedQueryable<TSource> OrderByIf<TSource>(this IQueryable<TSource> source, string? sorting) =>
-        string.IsNullOrWhiteSpace(sorting) ? (IOrderedQueryable<TSource>)source : source.OrderBy(sorting);
+    public static IOrderedQueryable<TSource> OrderByIf<TSource>(this IQueryable<TSource> source, string? ordering) =>
+        string.IsNullOrWhiteSpace(ordering) ? (IOrderedQueryable<TSource>)source : source.OrderBy(ordering);
 }
