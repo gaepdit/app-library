@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [6.0.0]
 
 - **Breaking:** Reduced the number of overloads in the `IReadRepository` interface by using more optional parameters.
   (This may require rewriting calls to the read repository methods.)
@@ -125,6 +125,7 @@
 
 _Initial release._
 
+[6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.0.0
 [5.6.1]: https://github.com/gaepdit/app-library/releases/tag/v5.6.1
 [5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
 [5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
