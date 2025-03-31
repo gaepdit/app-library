@@ -1,6 +1,6 @@
 # Changelog
 
-## [6.0.0]
+## [6.0.0] - 2025-03-31
 
 - **Breaking:** Reduced the number of overloads in the `IReadRepository` interface by using more optional parameters.
   (This may require rewriting calls to the read repository methods.)
