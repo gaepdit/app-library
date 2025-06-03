@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Unbreaking change:** Increased the number of overloads in the `IReadRepository` interface by using fewer optional
+  parameters. (This avoids requiring calls to the read repository methods to be rewritten if updating from a pre-6.0
+  version.)
+
 ## [6.0.0] - 2025-03-31
 
 - **Breaking:** Reduced the number of overloads in the `IReadRepository` interface by using more optional parameters.
