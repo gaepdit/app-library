@@ -1,6 +1,6 @@
 namespace AppLibrary.Tests.LocalRepositoryTests.NamedEntityRepositoryTests;
 
-public class NamedRepositoryTestBase
+public abstract class NamedRepositoryTestBase
 {
     protected TestNamedEntityRepository NamedEntityRepository;
 

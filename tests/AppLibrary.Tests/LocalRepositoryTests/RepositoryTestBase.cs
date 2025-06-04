@@ -1,6 +1,6 @@
 namespace AppLibrary.Tests.LocalRepositoryTests;
 
-public class RepositoryTestBase
+public abstract class RepositoryTestBase
 {
     protected TestRepository Repository;
 
