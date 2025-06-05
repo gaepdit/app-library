@@ -15,9 +15,10 @@ public abstract class NamedEntityRepository<TEntity, TContext>(TContext context)
     where TEntity : class, IEntity, INamedEntity
     where TContext : DbContext
 {
-    public Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default) =>
-        Context.Set<TEntity>().AsNoTracking()
-            .SingleOrDefaultAsync(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), token);
+    public async Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default) =>
+        await Context.Set<TEntity>().AsNoTracking()
+            .SingleOrDefaultAsync(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), token)
+            .ConfigureAwait(false);
 
     public async Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default) =>
         await Context.Set<TEntity>().AsNoTracking()

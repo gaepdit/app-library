@@ -1,6 +1,6 @@
 ﻿namespace AppLibrary.Tests.EfRepositoryTests;
 
-public class RepositoryTestBase
+public abstract class RepositoryTestBase
 {
     protected EfRepositoryTestHelper Helper;
     protected TestRepository Repository;

@@ -1,22 +1,22 @@
 ﻿namespace AppLibrary.Tests.EfRepositoryTests.NamedEntityRepositoryTests;
 
-public class NamedRepositoryTestBase
+public abstract class NamedRepositoryTestBase
 {
     protected EfRepositoryTestHelper Helper;
 
-    protected TestNamedEntityRepository Repository;
+    protected TestNamedEntityRepository NamedEntityRepository;
 
     [SetUp]
     public void SetUp()
     {
         Helper = EfRepositoryTestHelper.CreateRepositoryHelper();
-        Repository = Helper.GetNamedEntityRepository();
+        NamedEntityRepository = Helper.GetNamedEntityRepository();
     }
 
     [TearDown]
     public async Task TearDown()
     {
-        await Repository.DisposeAsync();
+        await NamedEntityRepository.DisposeAsync();
         await Helper.DisposeAsync();
     }
 }

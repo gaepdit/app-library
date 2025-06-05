@@ -25,8 +25,11 @@ public class FindByName : NamedRepositoryTestBase
     {
         var expected = NamedEntityRepository.Items.First();
 
-        var result = await NamedEntityRepository.FindByNameAsync(expected.Name.ToUpperInvariant());
+        var resultUpper = await NamedEntityRepository.FindByNameAsync(expected.Name.ToUpperInvariant());
+        var resultLower = await NamedEntityRepository.FindByNameAsync(expected.Name.ToLowerInvariant());
 
-        result.Should().BeEquivalentTo(expected);
+        using var scope = new AssertionScope();
+        resultUpper.Should().BeEquivalentTo(expected);
+        resultLower.Should().BeEquivalentTo(expected);
     }
 }

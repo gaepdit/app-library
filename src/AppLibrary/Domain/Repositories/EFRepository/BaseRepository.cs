@@ -32,56 +32,132 @@ public abstract class BaseRepository<TEntity, TKey, TContext>(TContext context)
 {
     public TContext Context => context;
 
-    public async Task<TEntity> GetAsync(TKey id, string[]? includeProperties = null,
+    // GetAsync
+    public Task<TEntity> GetAsync(TKey id, CancellationToken token = default) =>
+        GetAsyncInternal(id, token: token);
+
+    public Task<TEntity> GetAsync(TKey id, string[] includeProperties, CancellationToken token = default) =>
+        GetAsyncInternal(id, includeProperties, token);
+
+    private async Task<TEntity> GetAsyncInternal(TKey id, string[]? includeProperties = null,
         CancellationToken token = default) =>
-        await SetWithProperties(includeProperties).SingleOrDefaultAsync(entity => entity.Id.Equals(id), token)
-            .ConfigureAwait(false)
-        ?? throw new EntityNotFoundException<TEntity>(id);
+        await TrackingSet(includeProperties).SingleOrDefaultAsync(entity => entity.Id.Equals(id), token)
+            .ConfigureAwait(false) ?? throw new EntityNotFoundException<TEntity>(id);
 
-    private IQueryable<TEntity> SetWithProperties(string[]? includeProperties) => includeProperties is null
-        ? Context.Set<TEntity>()
-        : includeProperties.Aggregate(Context.Set<TEntity>().AsQueryable(),
-            (queryable, includeProperty) => queryable.Include(includeProperty));
+    // FindAsync
+    public Task<TEntity?> FindAsync(TKey id, CancellationToken token = default) =>
+        FindAsyncInternal(id, token: token);
 
-    private IQueryable<TEntity> NoTrackingSetWithProperties(string[]? includeProperties) =>
-        SetWithProperties(includeProperties).AsNoTracking();
+    public Task<TEntity?> FindAsync(TKey id, string[] includeProperties, CancellationToken token = default) =>
+        FindAsyncInternal(id, includeProperties, token);
 
-    public Task<TEntity?> FindAsync(TKey id, string[]? includeProperties = null, CancellationToken token = default) =>
-        NoTrackingSetWithProperties(includeProperties).SingleOrDefaultAsync(entity => entity.Id.Equals(id), token);
+    public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
+        FindAsyncInternal(predicate, token: token);
 
-    public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[]? includeProperties = null,
+    public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[] includeProperties,
         CancellationToken token = default) =>
-        NoTrackingSetWithProperties(includeProperties).SingleOrDefaultAsync(predicate, token);
+        FindAsyncInternal(predicate, includeProperties, token);
 
-    public async Task<IReadOnlyCollection<TEntity>> GetListAsync(string? ordering = null,
+    private Task<TEntity?> FindAsyncInternal(TKey id, string[]? includeProperties = null,
+        CancellationToken token = default) =>
+        FindAsyncInternal(entity => entity.Id.Equals(id), includeProperties, token);
+
+    private async Task<TEntity?> FindAsyncInternal(Expression<Func<TEntity, bool>> predicate,
         string[]? includeProperties = null, CancellationToken token = default) =>
-        await NoTrackingSetWithProperties(includeProperties).OrderByIf(ordering).ToListAsync(token)
-            .ConfigureAwait(false);
+        await NoTrackingSet(includeProperties).SingleOrDefaultAsync(predicate, token).ConfigureAwait(false);
 
-    public async Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
+    // GetListAsync
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(CancellationToken token = default) =>
+        GetListAsyncInternal(token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(string ordering, CancellationToken token = default) =>
+        GetListAsyncInternal(ordering, token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(string[] includeProperties,
+        CancellationToken token = default) =>
+        GetListAsyncInternal(includeProperties: includeProperties, token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(string ordering, string[] includeProperties,
+        CancellationToken token = default) =>
+        GetListAsyncInternal(ordering, includeProperties, token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
+        CancellationToken token = default) =>
+        GetListAsyncInternal(predicate, token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, string ordering,
+        CancellationToken token = default) =>
+        GetListAsyncInternal(predicate, ordering, token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
+        string[] includeProperties, CancellationToken token = default) =>
+        GetListAsyncInternal(predicate, includeProperties: includeProperties, token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
+        string ordering, string[] includeProperties, CancellationToken token = default) =>
+        GetListAsyncInternal(predicate, ordering, includeProperties, token);
+
+    private async Task<IReadOnlyCollection<TEntity>> GetListAsyncInternal(string? ordering = null,
+        string[]? includeProperties = null, CancellationToken token = default) =>
+        await NoTrackingSet(includeProperties).OrderByIf(ordering).ToListAsync(token).ConfigureAwait(false);
+
+    private async Task<IReadOnlyCollection<TEntity>> GetListAsyncInternal(Expression<Func<TEntity, bool>> predicate,
         string? ordering = null, string[]? includeProperties = null, CancellationToken token = default) =>
-        await NoTrackingSetWithProperties(includeProperties).Where(predicate).OrderByIf(ordering).ToListAsync(token)
+        await NoTrackingSet(includeProperties).Where(predicate).OrderByIf(ordering).ToListAsync(token)
             .ConfigureAwait(false);
 
-    public async Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
-        PaginatedRequest paging, string[]? includeProperties = null, CancellationToken token = default) =>
-        await NoTrackingSetWithProperties(includeProperties).Where(predicate).OrderByIf(paging.Sorting)
-            .Skip(paging.Skip).Take(paging.Take).ToListAsync(token).ConfigureAwait(false);
+    // GetPagedListAsync
+    public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
+        PaginatedRequest paging, CancellationToken token = default) =>
+        GetPagedListAsyncInternal(predicate, paging, token: token);
 
-    public async Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging,
+    public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
+        PaginatedRequest paging, string[] includeProperties, CancellationToken token = default) =>
+        GetPagedListAsyncInternal(predicate, paging, includeProperties, token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging,
+        CancellationToken token = default) =>
+        GetPagedListAsyncInternal(paging, token: token);
+
+    public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, string[] includeProperties,
+        CancellationToken token = default) =>
+        GetPagedListAsyncInternal(paging, includeProperties, token);
+
+    private async Task<IReadOnlyCollection<TEntity>> GetPagedListAsyncInternal(
+        Expression<Func<TEntity, bool>> predicate, PaginatedRequest paging, string[]? includeProperties = null,
+        CancellationToken token = default) =>
+        await ApplyPagingAsync(NoTrackingSet(includeProperties).Where(predicate), paging, token).ConfigureAwait(false);
+
+    private async Task<IReadOnlyCollection<TEntity>> GetPagedListAsyncInternal(PaginatedRequest paging,
         string[]? includeProperties = null, CancellationToken token = default) =>
-        await NoTrackingSetWithProperties(includeProperties).OrderByIf(paging.Sorting).Skip(paging.Skip)
-            .Take(paging.Take).ToListAsync(token).ConfigureAwait(false);
+        await ApplyPagingAsync(NoTrackingSet(includeProperties), paging, token).ConfigureAwait(false);
 
-    public Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
-        Context.Set<TEntity>().AsNoTracking().CountAsync(predicate, token);
+    private static Task<List<TEntity>> ApplyPagingAsync(IQueryable<TEntity> queryable, PaginatedRequest paging,
+        CancellationToken token) =>
+        queryable.OrderByIf(paging.Sorting).Skip(paging.Skip).Take(paging.Take).ToListAsync(token);
 
+    // CountAsync
+    public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
+        await NoTrackingSet().CountAsync(predicate, token).ConfigureAwait(false);
+
+    // ExistsAsync
     public Task<bool> ExistsAsync(TKey id, CancellationToken token = default) =>
-        Context.Set<TEntity>().AsNoTracking().AnyAsync(entity => entity.Id.Equals(id), token);
+        ExistsAsync(entity => entity.Id.Equals(id), token);
 
-    public Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
-        Context.Set<TEntity>().AsNoTracking().AnyAsync(predicate, token);
+    public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
+        await NoTrackingSet().AnyAsync(predicate, token).ConfigureAwait(false);
 
+    // Common IReadRepository methods
+    private IQueryable<TEntity> TrackingSet(string[]? includeProperties) =>
+        includeProperties is null || includeProperties.Length == 0
+            ? Context.Set<TEntity>()
+            : includeProperties.Aggregate(Context.Set<TEntity>().AsQueryable(),
+                (queryable, includeProperty) => queryable.Include(includeProperty));
+
+    private IQueryable<TEntity> NoTrackingSet(string[]? includeProperties = null) =>
+        TrackingSet(includeProperties).AsNoTracking();
+
+    // IWriteRepository methods
     public async Task InsertAsync(TEntity entity, bool autoSave = true, CancellationToken token = default)
     {
         await Context.Set<TEntity>().AddAsync(entity, token).ConfigureAwait(false);
@@ -125,7 +201,8 @@ public abstract class BaseRepository<TEntity, TKey, TContext>(TContext context)
         }
     }
 
-    public Task SaveChangesAsync(CancellationToken token = default) => Context.SaveChangesAsync(token);
+    public async Task SaveChangesAsync(CancellationToken token = default) =>
+        await Context.SaveChangesAsync(token).ConfigureAwait(false);
 
     #region IDisposable, IAsyncDisposable
 
