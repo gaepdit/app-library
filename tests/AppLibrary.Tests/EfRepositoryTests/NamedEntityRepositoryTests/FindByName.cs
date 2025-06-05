@@ -7,9 +7,9 @@ public class FindByName : NamedRepositoryTestBase
     [Test]
     public async Task FindByName_WhenEntityExists_ReturnsEntity()
     {
-        var expected = Repository.Context.Set<TestNamedEntity>().First();
+        var expected = NamedEntityRepository.Context.Set<TestNamedEntity>().First();
 
-        var result = await Repository.FindByNameAsync(expected.Name);
+        var result = await NamedEntityRepository.FindByNameAsync(expected.Name);
 
         result.Should().BeEquivalentTo(expected);
     }
@@ -17,7 +17,7 @@ public class FindByName : NamedRepositoryTestBase
     [Test]
     public async Task FindByName_WhenEntityDoesNotExist_ReturnsNull()
     {
-        var result = await Repository.FindByNameAsync("xxx");
+        var result = await NamedEntityRepository.FindByNameAsync("xxx");
 
         result.Should().BeNull();
     }
@@ -25,10 +25,13 @@ public class FindByName : NamedRepositoryTestBase
     [Test]
     public async Task FindByName_IsNotCaseSensitive()
     {
-        var expected = Repository.Context.Set<TestNamedEntity>().First();
+        var expected = NamedEntityRepository.Context.Set<TestNamedEntity>().First();
 
-        var result = await Repository.FindByNameAsync(expected.Name.ToUpperInvariant());
+        var resultUpper = await NamedEntityRepository.FindByNameAsync(expected.Name.ToUpperInvariant());
+        var resultLower = await NamedEntityRepository.FindByNameAsync(expected.Name.ToLowerInvariant());
 
-        result.Should().BeEquivalentTo(expected);
+        using var scope = new AssertionScope();
+        resultUpper.Should().BeEquivalentTo(expected);
+        resultLower.Should().BeEquivalentTo(expected);
     }
 }

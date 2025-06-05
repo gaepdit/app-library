@@ -32,7 +32,7 @@ public class GetIncludeProperties : NavigationPropertiesTestBase
         // Assert
         using var scope = new AssertionScope();
         result.Should().BeEquivalentTo(expected);
-        result.TextRecords.Count.Should().Be(expected.TextRecords.Count);
+        result.TextRecords.Should().HaveCount(expected.TextRecords.Count);
     }
 
     [Test]
@@ -47,6 +47,6 @@ public class GetIncludeProperties : NavigationPropertiesTestBase
         // Assert
         using var scope = new AssertionScope();
         result.Should().BeEquivalentTo(expected, options => options.Excluding(entity => entity.TextRecords));
-        result.TextRecords.Count.Should().Be(expected: 0);
+        result.TextRecords.Should().BeEmpty();
     }
 }

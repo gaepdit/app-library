@@ -7,9 +7,9 @@ public class GetOrderedList : NamedRepositoryTestBase
     [Test]
     public async Task GetOrderedList_ReturnsAllEntities()
     {
-        var expected = Repository.Context.Set<TestNamedEntity>().OrderBy(entity => entity.Name);
+        var expected = NamedEntityRepository.Context.Set<TestNamedEntity>().OrderBy(entity => entity.Name);
 
-        var result = await Repository.GetOrderedListAsync();
+        var result = await NamedEntityRepository.GetOrderedListAsync();
 
         result.Should().BeEquivalentTo(expected);
     }
@@ -19,7 +19,7 @@ public class GetOrderedList : NamedRepositoryTestBase
     {
         await Helper.ClearTableAsync<TestNamedEntity>();
 
-        var result = await Repository.GetOrderedListAsync();
+        var result = await NamedEntityRepository.GetOrderedListAsync();
 
         result.Should().BeEmpty();
     }
@@ -27,12 +27,13 @@ public class GetOrderedList : NamedRepositoryTestBase
     [Test]
     public async Task GetOrderedList_UsingPredicate_ReturnsCorrectEntities()
     {
-        var expected = Repository.Context.Set<TestNamedEntity>()
+        var expected = NamedEntityRepository.Context.Set<TestNamedEntity>()
             .Where(entity => entity.Name.Contains(EfRepositoryTestHelper.UsefulSuffix))
             .OrderBy(entity => entity.Name);
 
         var result =
-            await Repository.GetOrderedListAsync(entity => entity.Name.Contains(EfRepositoryTestHelper.UsefulSuffix));
+            await NamedEntityRepository.GetOrderedListAsync(entity =>
+                entity.Name.Contains(EfRepositoryTestHelper.UsefulSuffix));
 
         result.Should().BeEquivalentTo(expected);
     }
@@ -40,7 +41,7 @@ public class GetOrderedList : NamedRepositoryTestBase
     [Test]
     public async Task GetOrderedList_UsingPredicate_WhenNoItemsMatch_ReturnsEmptyList()
     {
-        var result = await Repository.GetOrderedListAsync(entity => entity.Id == Guid.Empty);
+        var result = await NamedEntityRepository.GetOrderedListAsync(entity => entity.Id == Guid.Empty);
 
         result.Should().BeEmpty();
     }

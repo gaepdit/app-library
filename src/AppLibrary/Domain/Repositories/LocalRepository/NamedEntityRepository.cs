@@ -13,8 +13,8 @@ public abstract class NamedEntityRepository<TEntity>(IEnumerable<TEntity> items)
     where TEntity : class, IEntity, INamedEntity
 {
     public async Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default) =>
-        await Task.FromResult(Items.SingleOrDefault(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper())))
-            .ConfigureAwait(false);
+        await Task.FromResult(Items.SingleOrDefault(entity =>
+            string.Equals(entity.Name, name, StringComparison.OrdinalIgnoreCase))).ConfigureAwait(false);
 
     public async Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default) =>
         await Task.FromResult<IReadOnlyCollection<TEntity>>(Items.OrderBy(entity => entity.Name)
