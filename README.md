@@ -13,7 +13,7 @@ This repo contains a library created by Georgia EPD-IT to provide common classes
 
 [![Nuget](https://img.shields.io/nuget/v/GaEpd.AppLibrary)](https://www.nuget.org/packages/GaEpd.AppLibrary)
 
-To install , search for "GaEpd.AppLibrary" in the NuGet package manager or run the following command:
+To install, search for "GaEpd.AppLibrary" in the NuGet package manager or run the following command:
 
 `dotnet add package GaEpd.AppLibrary`
 
@@ -96,8 +96,8 @@ search operations (including paginated search). The `IWriteRepository` interface
 operations. `IRepository` combines the read and write interfaces. Finally, the `INamedEntityRepository` adds a
 find-by-name method.
 
-(Note that these interfaces work directly with domain entities. Your application should
-define [application/domain services](https://docs.abp.io/en/abp/latest/Domain-Services#application-services-vs-domain-services)
+(Note that these interfaces work directly with domain entities. Your application should define
+[application/domain services](https://docs.abp.io/en/abp/latest/Domain-Services#application-services-vs-domain-services)
 that define how the application interacts with the entities & repositories through data transfer objects (DTOs).)
 
 There are two abstract `BaseRepository` classes that each implement the `IRepository` interface, one using in-memory

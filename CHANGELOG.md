@@ -1,15 +1,16 @@
 # Changelog
 
-## Unreleased
+## [6.1.0] - 2025-06-05
 
-- **Unbreaking change:** Increased the number of overloads in the `IReadRepository` interface by using fewer optional
+- **Breaking change:** Increased the number of overloads in the `IReadRepository` interface by using fewer optional
   parameters. (This avoids requiring calls to the read repository methods to be rewritten if updating from a pre-6.0
-  version.)
+  version, so for some this is an *unbreaking change*. If you have mocked any `IReadRepository` in your unit tests,
+  though, you might have to update which methods are actually being called.)
 
 ## [6.0.0] - 2025-03-31
 
-- **Breaking:** Reduced the number of overloads in the `IReadRepository` interface by using more optional parameters.
-  (This may require rewriting calls to the read repository methods.)
+- **Breaking change:** Reduced the number of overloads in the `IReadRepository` interface by using more optional
+  parameters. (This may require rewriting calls to the read repository methods.)
 - Added optional `includeProperties` parameters to the `GetListAsync()` repository methods.
 
 ## [5.6.1] - 2025-03-24
@@ -29,7 +30,8 @@
 ## [5.4.0] - 2025-01-09
 
 - Added `GetListAsync` overloads that allow you to specify the ordering of the returned list.
-- Added `GetPagedListAsync` overloads that allow you to specify what navigation properties to include (when using the Entity Framework repository).
+- Added `GetPagedListAsync` overloads that allow you to specify what navigation properties to include (when using the
+  Entity Framework repository).
 - The parent type of `EntityNotFoundException` has been changed to `KeyNotFoundException` (instead of `Exception`).
 
 ## [5.3.1] - 2024-09-11
@@ -38,7 +40,8 @@
 
 ## [5.3.0] - 2024-09-10
 
-- Added `GetAsync` and `FindAsync` overloads that allow you to specify what navigation properties to include (when using the Entity Framework repository).
+- Added `GetAsync` and `FindAsync` overloads that allow you to specify what navigation properties to include (when using
+  the Entity Framework repository).
 
 ## [5.2.1] - 2024-04-30
 
@@ -63,12 +66,14 @@
 
 ### Added
 
-- Added entity and repository interfaces that default to using a GUID primary key and updated the abstract classes to use these new interfaces.
+- Added entity and repository interfaces that default to using a GUID primary key and updated the abstract classes to
+  use these new interfaces.
 
 ### Changed
 
 - **Breaking changes:**
-  - Uses of `EntityNotFoundException` will need to be updated to provide the class type. For example, `EntityNotFoundException(typeof(MyEntity), id)` should be replaced with `EntityNotFoundException<MyEntity>(id)`.
+  - Uses of `EntityNotFoundException` will need to be updated to provide the class type. For example,
+    `EntityNotFoundException(typeof(MyEntity), id)` should be replaced with `EntityNotFoundException<MyEntity>(id)`.
   - References to `IEntity<Guid>` may need to be replaced with `IEntity`.
 
 ## [4.1.0] - 2023-11-09
@@ -96,8 +101,8 @@
 
 - Added a "ConcatWithSeparator" string extension.
 - Added "PreviousPageNumber" and "NextPageNumber" properties to the IPaginatedResult interface.
-- Made some possible performance improvements to the Enum extensions. 
-  Breaking change: The Enum extensions no longer work with nullable Enum values. 
+- Made some possible performance improvements to the Enum extensions.
+  Breaking change: The Enum extensions no longer work with nullable Enum values.
 
 ## [3.2.0] - 2023-05-22
 
@@ -131,28 +136,54 @@
 
 _Initial release._
 
+[6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
+
 [6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.0.0
+
 [5.6.1]: https://github.com/gaepdit/app-library/releases/tag/v5.6.1
+
 [5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
+
 [5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
+
 [5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
+
 [5.3.1]: https://github.com/gaepdit/app-library/releases/tag/v5.3.1
+
 [5.3.0]: https://github.com/gaepdit/app-library/releases/tag/v5.3.0
+
 [5.2.1]: https://github.com/gaepdit/app-library/releases/tag/v5.2.1
+
 [5.2.0]: https://github.com/gaepdit/app-library/releases/tag/v5.2.0
+
 [5.1.0]: https://github.com/gaepdit/app-library/releases/tag/l%2Fv5.1.0
+
 [5.0.1]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.1
+
 [5.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.0
+
 [4.1.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.1.0
+
 [4.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.0.0
+
 [3.5.1]: https://github.com/gaepdit/app-library/releases/tag/v3.5.1
+
 [3.5.0]: https://github.com/gaepdit/app-library/releases/tag/v3.5.0
+
 [3.4.0]: https://github.com/gaepdit/app-library/releases/tag/v3.4.0
+
 [3.3.0]: https://github.com/gaepdit/app-library/releases/tag/v3.3.0
+
 [3.2.0]: https://github.com/gaepdit/app-library/releases/tag/v3.2.0
+
 [3.1.0]: https://github.com/gaepdit/app-library/releases/tag/v3.1.0
+
 [3.0.0]: https://github.com/gaepdit/app-library/releases/tag/v3.0.0
+
 [2.0.0]: https://github.com/gaepdit/app-library/releases/tag/v2.0.0
+
 [1.1.0]: https://github.com/gaepdit/app-library/releases/tag/v1.1.0
+
 [1.0.1]: https://github.com/gaepdit/app-library/releases/tag/v1.0.1
+
 [1.0.0]: https://github.com/gaepdit/app-library/releases/tag/v1.0.0
