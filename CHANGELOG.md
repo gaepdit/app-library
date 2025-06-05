@@ -136,7 +136,7 @@
 
 _Initial release._
 
-[6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
+[6.1.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
 
 [6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.0.0
 
