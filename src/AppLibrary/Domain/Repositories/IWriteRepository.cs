@@ -12,7 +12,7 @@ public interface IWriteRepository<in TEntity, in TKey> : IDisposable, IAsyncDisp
     where TKey : IEquatable<TKey>
 {
     /// <summary>
-    /// Inserts a new <see cref="IEntity{TKey}"/>.
+    /// Inserts a new <see cref="TEntity"/>.
     /// </summary>
     /// <param name="entity">The entity to insert.</param>
     /// <param name="autoSave">Whether to automatically save the changes (default is true).</param>
@@ -21,7 +21,7 @@ public interface IWriteRepository<in TEntity, in TKey> : IDisposable, IAsyncDisp
     Task InsertAsync(TEntity entity, bool autoSave = true, CancellationToken token = default);
 
     /// <summary>
-    /// Updates an <see cref="IEntity{TKey}"/>.
+    /// Updates an <see cref="TEntity"/>.
     /// </summary>
     /// <param name="entity">The entity to update.</param>
     /// <param name="autoSave">Whether to automatically save the changes (default is true).</param>
@@ -30,7 +30,7 @@ public interface IWriteRepository<in TEntity, in TKey> : IDisposable, IAsyncDisp
     Task UpdateAsync(TEntity entity, bool autoSave = true, CancellationToken token = default);
 
     /// <summary>
-    /// Deletes an <see cref="IEntity{TKey}"/>. Avoid using this method if the Entity 
+    /// Deletes an <see cref="TEntity"/>. Avoid using this method if the Entity 
     /// implements <see cref="ISoftDelete{TKey}"/>.
     /// </summary>
     /// <param name="entity">The entity to delete.</param>
