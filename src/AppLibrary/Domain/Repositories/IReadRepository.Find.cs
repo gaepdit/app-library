@@ -1,3 +1,4 @@
+using AutoMapper;
 using System.Linq.Expressions;
 
 namespace GaEpd.AppLibrary.Domain.Repositories;
@@ -26,6 +27,17 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<TEntity?> FindAsync(TKey id, string[] includeProperties, CancellationToken token = default);
 
     /// <summary>
+    /// Returns the <see cref="TDestination"/> projection of the entity matching the given <paramref name="id"/>.
+    /// Returns null if there are no matches.
+    /// </summary>
+    /// <param name="id">The ID of the entity.</param>
+    /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
+    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
+    /// <exception cref="InvalidOperationException">Thrown if there are multiple matches.</exception>
+    /// <returns>An entity or null.</returns>
+    Task<TDestination?> FindAsync<TDestination>(TKey id, IMapper mapper, CancellationToken token = default);
+
+    /// <summary>
     /// Returns a single <see cref="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
     /// Returns null if there are no matches.
     /// </summary>
@@ -45,5 +57,17 @@ public partial interface IReadRepository<TEntity, in TKey>
     /// <exception cref="InvalidOperationException">Thrown if there are multiple matches.</exception>
     /// <returns>An entity or null.</returns>
     Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[] includeProperties,
+        CancellationToken token = default);
+
+    /// <summary>
+    /// Returns the <see cref="TDestination"/> projection of the entity matching the conditions of the <paramref name="predicate"/>.
+    /// Returns null if there are no matches.
+    /// </summary>
+    /// <param name="predicate">The search conditions.</param>
+    /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
+    /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
+    /// <exception cref="InvalidOperationException">Thrown if there are multiple matches.</exception>
+    /// <returns>An entity or null.</returns>
+    Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
         CancellationToken token = default);
 }

@@ -1,3 +1,5 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using GaEpd.AppLibrary.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
@@ -24,12 +26,24 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     public Task<TEntity?> FindAsync(TKey id, string[] includeProperties, CancellationToken token = default) =>
         FindAsyncInternal(id, includeProperties, token);
 
+    public Task<TDestination?> FindAsync<TDestination>(TKey id, IMapper mapper, CancellationToken token = default) =>
+        FindAsync<TDestination>(entity => entity.Id.Equals(id), mapper, token);
+
     public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
         FindAsyncInternal(predicate, token: token);
 
     public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[] includeProperties,
         CancellationToken token = default) =>
         FindAsyncInternal(predicate, includeProperties, token);
+
+    public Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
+        CancellationToken token = default) =>
+        Context.Set<TEntity>()
+            .Where(predicate)
+            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
+            .SingleOrDefaultAsync(token);
+
+    // Internal methods
 
     private Task<TEntity?> FindAsyncInternal(TKey id, string[]? includeProperties = null,
         CancellationToken token = default) =>
