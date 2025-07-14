@@ -4,14 +4,14 @@ namespace AppLibrary.Tests.PaginationTests;
 
 public class PaginatedResultTests
 {
-    private readonly string[] _items = { "abc", "def" };
+    private readonly string[] _items = ["abc", "def"];
 
     [Test]
     public void ReturnsCorrectlyGivenCompleteList()
     {
         var itemCount = _items.Length;
         var result = new PaginatedResult<string>(_items, itemCount,
-            new PaginatedRequest(1, _items.Length));
+            new PaginatedRequest(1, _items.Length, "_"));
 
         using var scope = new AssertionScope();
         result.CurrentCount.Should().Be(_items.Length);
@@ -32,7 +32,7 @@ public class PaginatedResultTests
     {
         const int itemCount = 10;
         var result = new PaginatedResult<string>(_items, itemCount,
-            new PaginatedRequest(2, _items.Length));
+            new PaginatedRequest(2, _items.Length, "_"));
 
         using var scope = new AssertionScope();
         result.CurrentCount.Should().Be(_items.Length);
@@ -52,7 +52,7 @@ public class PaginatedResultTests
     public void ThrowsExceptionGivenNegativeCount()
     {
         var action = () => new PaginatedResult<string>(_items, -1,
-            new PaginatedRequest(1, _items.Length));
+            new PaginatedRequest(1, _items.Length, "_"));
 
         action.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be("totalCount");
@@ -62,7 +62,7 @@ public class PaginatedResultTests
     public void ThrowsExceptionGivenZeroPageNum()
     {
         var action = () => new PaginatedResult<string>(_items, _items.Length,
-            new PaginatedRequest(0, _items.Length));
+            new PaginatedRequest(0, _items.Length, "_"));
 
         action.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be("pageNumber");
@@ -72,7 +72,7 @@ public class PaginatedResultTests
     public void ThrowsExceptionGivenZeroPageSize()
     {
         var action = () => new PaginatedResult<string>(_items, _items.Length,
-            new PaginatedRequest(1, 0));
+            new PaginatedRequest(1, 0, "_"));
 
         action.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be("pageSize");

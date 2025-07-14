@@ -1,4 +1,7 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using GaEpd.AppLibrary.Domain.Entities;
+using GaEpd.AppLibrary.Extensions;
 using GaEpd.AppLibrary.Pagination;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
@@ -21,30 +24,44 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     // GetPagedListAsync
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
         PaginatedRequest paging, CancellationToken token = default) =>
-        GetPagedListAsyncInternal(predicate, paging, token: token);
+        GetPagedListInternal(paging, predicate, token: token);
 
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
         PaginatedRequest paging, string[] includeProperties, CancellationToken token = default) =>
-        GetPagedListAsyncInternal(predicate, paging, includeProperties, token);
+        GetPagedListInternal(paging, predicate, includeProperties, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging,
         CancellationToken token = default) =>
-        GetPagedListAsyncInternal(paging, token: token);
+        GetPagedListInternal(paging, token: token);
 
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, string[] includeProperties,
         CancellationToken token = default) =>
-        GetPagedListAsyncInternal(paging, includeProperties, token);
+        GetPagedListInternal(paging, includeProperties: includeProperties, token: token);
 
-    private async Task<IReadOnlyCollection<TEntity>> GetPagedListAsyncInternal(
-        Expression<Func<TEntity, bool>> predicate, PaginatedRequest paging, string[]? includeProperties = null,
+    public Task<IReadOnlyCollection<TDestination>> GetPagedListAsync<TDestination>(
+        Expression<Func<TEntity, bool>> predicate, PaginatedRequest paging, IMapper mapper,
         CancellationToken token = default) =>
-        await ApplyPagingAsync(NoTrackingSet(includeProperties).Where(predicate), paging, token).ConfigureAwait(false);
+        GetListInternal<TDestination>(mapper, paging, predicate, token);
 
-    private async Task<IReadOnlyCollection<TEntity>> GetPagedListAsyncInternal(PaginatedRequest paging,
-        string[]? includeProperties = null, CancellationToken token = default) =>
-        await ApplyPagingAsync(NoTrackingSet(includeProperties), paging, token).ConfigureAwait(false);
+    public Task<IReadOnlyCollection<TDestination>> GetPagedListAsync<TDestination>(PaginatedRequest paging,
+        IMapper mapper, CancellationToken token = default) =>
+        GetListInternal<TDestination>(mapper, paging, token: token);
 
-    private static Task<List<TEntity>> ApplyPagingAsync(IQueryable<TEntity> queryable, PaginatedRequest paging,
-        CancellationToken token) =>
-        queryable.OrderByIf(paging.Sorting).Skip(paging.Skip).Take(paging.Take).ToListAsync(token);
+    // Internal methods
+    private async Task<IReadOnlyCollection<TEntity>> GetPagedListInternal(PaginatedRequest paging,
+        Expression<Func<TEntity, bool>>? predicate = null, string[]? includeProperties = null,
+        CancellationToken token = default) =>
+        await NoTrackingSet(includeProperties)
+            .WhereIf(predicate)
+            .ApplyPaging(paging)
+            .ToListAsync(token).ConfigureAwait(false);
+
+    private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
+        PaginatedRequest paging, Expression<Func<TEntity, bool>>? predicate = null,
+        CancellationToken token = default) =>
+        await Context.Set<TEntity>()
+            .WhereIf(predicate)
+            .ApplyPaging(paging)
+            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
+            .ToListAsync(token).ConfigureAwait(false);
 }

@@ -17,12 +17,13 @@ public abstract partial class BaseRepository<TEntity, TKey>
 
     // GetAsync
     public Task<TEntity> GetAsync(TKey id, CancellationToken token = default) =>
-        GetAsyncInternal(id);
+        GetInternal(id);
 
     public Task<TEntity> GetAsync(TKey id, string[] includeProperties, CancellationToken token = default) =>
-        GetAsyncInternal(id);
+        GetInternal(id);
 
-    private async Task<TEntity> GetAsyncInternal(TKey id) =>
-        await FindAsyncInternal(id).ConfigureAwait(false) ??
+    // Internal methods
+    private async Task<TEntity> GetInternal(TKey id) =>
+        await FindInternal(id).ConfigureAwait(false) ??
         throw new EntityNotFoundException<TEntity>(id);
 }

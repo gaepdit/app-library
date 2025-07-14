@@ -9,7 +9,7 @@ public class PaginatedRequestTests
     {
         const int pageNumber = 2;
         const int pageSize = 10;
-        const string sorting = "Name";
+        const string sorting = "Note";
 
         var pagination = new PaginatedRequest(pageNumber, pageSize, sorting);
 
@@ -27,7 +27,7 @@ public class PaginatedRequestTests
         const int pageNumber = 2;
         const int pageSize = 0;
 
-        var action = () => new PaginatedRequest(pageNumber, pageSize);
+        var action = () => new PaginatedRequest(pageNumber, pageSize, "_");
         action.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be(nameof(pageSize));
     }
@@ -38,7 +38,7 @@ public class PaginatedRequestTests
         const int pageNumber = 0;
         const int pageSize = 20;
 
-        var action = () => new PaginatedRequest(pageNumber, pageSize);
+        var action = () => new PaginatedRequest(pageNumber, pageSize, "_");
         action.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be(nameof(pageNumber));
     }

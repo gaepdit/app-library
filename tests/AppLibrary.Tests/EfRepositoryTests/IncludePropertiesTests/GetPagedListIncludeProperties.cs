@@ -1,86 +1,60 @@
-﻿using AppLibrary.Tests.TestEntities;
-using GaEpd.AppLibrary.Pagination;
-using Microsoft.EntityFrameworkCore;
+﻿using GaEpd.AppLibrary.Pagination;
 
 namespace AppLibrary.Tests.EfRepositoryTests.IncludePropertiesTests;
 
-public class GetPagedListIncludeProperties : NavigationPropertiesTestBase
+public class GetPagedListIncludeProperties : TestsBase
 {
-    private const string TextRecordsName = nameof(TestEntityWithNavigationProperties.TextRecords);
-
     [Test]
     public async Task GetPagedList_WithNoIncludedProperties_ReturnsWithoutProperties()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 10);
-        var expectedResults = await Repository.Context.Set<TestEntityWithNavigationProperties>()
-            .Include(entity => entity.TextRecords)
-            .Skip(paging.Skip).Take(paging.Take).ToListAsync();
+        var paging = new PaginatedRequest(1, 10, "_");
 
         // Act
-        var results = await Repository.GetPagedListAsync(paging,
-            includeProperties: []);
+        var results = await Repository.GetPagedListAsync(paging, includeProperties: []);
 
         // Assert
-        using var scope = new AssertionScope();
-        results.Should().NotBeEquivalentTo(expectedResults);
-        results.Should().BeEquivalentTo(expectedResults, options => options.Excluding(entity => entity.TextRecords));
+        results.Should().AllSatisfy(entity => entity.TextRecords.Should().BeEmpty());
     }
 
     [Test]
     public async Task GetPagedList_WithIncludedProperties_ReturnsWithProperties()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 10);
-        var expectedResults = await Repository.Context.Set<TestEntityWithNavigationProperties>()
-            .Include(entity => entity.TextRecords)
-            .Skip(paging.Skip).Take(paging.Take).ToListAsync();
+        var paging = new PaginatedRequest(1, 10, "_");
 
         // Act
-        var results = await Repository.GetPagedListAsync(paging,
-            includeProperties: [TextRecordsName]);
+        var results = await Repository.GetPagedListAsync(paging, includeProperties: [TextRecordsName]);
 
         // Assert
-        results.Should().BeEquivalentTo(expectedResults);
+        results.Should().AllSatisfy(entity => entity.TextRecords.Should().NotBeEmpty());
     }
 
     [Test]
     public async Task GetPagedList_WithPredicate_WithNoIncludedProperties_ReturnsWithoutProperties()
     {
         // Arrange
-        var excludedName = NavigationPropertyEntities[0].Name;
-        var paging = new PaginatedRequest(1, 10);
-        var expectedResults = await Repository.Context.Set<TestEntityWithNavigationProperties>()
-            .Include(entity => entity.TextRecords)
-            .Where(entity => entity.Name != excludedName)
-            .Skip(paging.Skip).Take(paging.Take).ToListAsync();
+        var paging = new PaginatedRequest(1, 10, "_");
 
         // Act
-        var results = await Repository.GetPagedListAsync(e => e.Name != excludedName, paging,
-            includeProperties: []);
+        var results =
+            await Repository.GetPagedListAsync(e => e.Note == TestData[0].Note, paging, includeProperties: []);
 
         // Assert
-        using var scope = new AssertionScope();
-        results.Should().NotBeEquivalentTo(expectedResults);
-        results.Should().BeEquivalentTo(expectedResults, options => options.Excluding(entity => entity.TextRecords));
+        results.Should().AllSatisfy(entity => entity.TextRecords.Should().BeEmpty());
     }
 
     [Test]
     public async Task GetPagedList_WithPredicate_WithIncludedProperties_ReturnsWithProperties()
     {
         // Arrange
-        var excludedName = NavigationPropertyEntities[0].Name;
-        var paging = new PaginatedRequest(1, 10);
-        var expectedResults = await Repository.Context.Set<TestEntityWithNavigationProperties>()
-            .Include(entity => entity.TextRecords)
-            .Where(entity => entity.Name != excludedName)
-            .Skip(paging.Skip).Take(paging.Take).ToListAsync();
+        var paging = new PaginatedRequest(1, 10, "_");
 
         // Act
-        var results = await Repository.GetPagedListAsync(e => e.Name != excludedName, paging,
+        var results = await Repository.GetPagedListAsync(e => e.Note == TestData[0].Note, paging,
             includeProperties: [TextRecordsName]);
 
         // Assert
-        results.Should().BeEquivalentTo(expectedResults);
+        results.Should().AllSatisfy(entity => entity.TextRecords.Should().NotBeEmpty());
     }
 }
