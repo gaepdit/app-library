@@ -32,7 +32,7 @@ public class GetPagedList : TestsBase
     public async Task WhenNoItemsExist_ReturnsEmptyList()
     {
         Repository.Items.Clear();
-        var paging = new PaginatedRequest(1, 1, "_");
+        var paging = new PaginatedRequest(1, 1, "Id");
 
         var result = await Repository.GetPagedListAsync(paging);
 
@@ -42,7 +42,7 @@ public class GetPagedList : TestsBase
     [Test]
     public async Task WhenPagedBeyondExistingItems_ReturnsEmptyList()
     {
-        var paging = new PaginatedRequest(2, Repository.Items.Count, "_");
+        var paging = new PaginatedRequest(2, Repository.Items.Count, "Id");
 
         var result = await Repository.GetPagedListAsync(paging);
 

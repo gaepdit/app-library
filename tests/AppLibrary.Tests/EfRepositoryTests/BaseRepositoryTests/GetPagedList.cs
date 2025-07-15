@@ -42,7 +42,7 @@ public class GetPagedList : TestsBase
     {
         // Arrange
         await Helper.ClearTableAsync<TestEntity>();
-        var paging = new PaginatedRequest(1, 1, "_");
+        var paging = new PaginatedRequest(1, 1, "Id");
 
         // Act
         var result = await Repository.GetPagedListAsync(paging);
@@ -56,7 +56,7 @@ public class GetPagedList : TestsBase
     {
         // Arrange
         var items = Repository.Context.Set<TestEntity>();
-        var paging = new PaginatedRequest(2, items.Count(), "_");
+        var paging = new PaginatedRequest(2, items.Count(), "Id");
 
         // Act
         var result = await Repository.GetPagedListAsync(paging);

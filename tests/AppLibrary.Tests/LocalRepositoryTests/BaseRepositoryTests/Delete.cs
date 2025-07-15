@@ -10,7 +10,7 @@ public class Delete : TestsBase
 
         await Repository.DeleteAsync(entity);
 
-        Repository.Items.Count.Should().Be(initialCount - 1);
+        Repository.Items.Should().HaveCount(initialCount - 1);
     }
 
     [Test]

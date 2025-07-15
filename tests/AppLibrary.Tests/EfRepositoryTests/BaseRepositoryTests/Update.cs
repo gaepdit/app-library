@@ -19,7 +19,7 @@ public class Update : TestsBase
 
         using var scope = new AssertionScope();
         result.Should().BeEquivalentTo(newEntityWithSameId);
-        Repository.Context.Set<TestEntity>().ToList().Contains(originalEntity).Should().BeFalse();
+        Repository.Context.Set<TestEntity>().Should().NotContain(originalEntity);
     }
 
     [Test]

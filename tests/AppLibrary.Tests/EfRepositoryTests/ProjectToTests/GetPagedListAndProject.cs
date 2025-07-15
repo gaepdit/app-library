@@ -48,7 +48,7 @@ public class GetPagedListAndProject : TestsBase
     {
         // Arrange
         await Helper.ClearTableAsync<EntityWithChildProperty>();
-        var paging = new PaginatedRequest(1, 10, "_");
+        var paging = new PaginatedRequest(1, 10, "Id");
 
         // Act
         var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
@@ -60,7 +60,7 @@ public class GetPagedListAndProject : TestsBase
     [Test]
     public async Task WhenPagedBeyondExistingItems_ReturnsEmptyList()
     {
-        var paging = new PaginatedRequest(2, TestData.Count, "_");
+        var paging = new PaginatedRequest(2, TestData.Count, "Id");
 
         var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
 

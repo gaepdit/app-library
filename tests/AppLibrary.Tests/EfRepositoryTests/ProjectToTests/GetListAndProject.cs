@@ -7,17 +7,20 @@ public class GetListAndProject : TestsBase
     [Test]
     public async Task GetList_ReturnsAllAsDto()
     {
+        // Arrange
+        var expected = TestData.OrderBy(e => e.Id).ToList();
+
         // Act
         var result = await Repository.GetListAsync<EntityDto>(Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        var results = result.ToList();
+        var results = result.OrderBy(e => e.Id).ToList();
         for (var i = 0; i < TestData.Count; i++)
         {
-            results[i].Id.Should().Be(TestData[i].Id);
-            results[i].TextRecordText.Should().Be(TestData[i].TextRecord.Text);
+            results[i].Id.Should().Be(expected[i].Id);
+            results[i].TextRecordText.Should().Be(expected[i].TextRecord.Text);
         }
     }
 

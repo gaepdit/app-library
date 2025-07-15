@@ -17,12 +17,14 @@ public abstract class TestsBase
         new()
         {
             Id = Guid.NewGuid(),
+            Note = "A",
             TextRecord = new TextRecord { Id = Guid.NewGuid(), Text = "Abc" },
         },
 
         new()
         {
             Id = Guid.NewGuid(),
+            Note = "B",
             TextRecord = new TextRecord { Id = Guid.NewGuid(), Text = "Def" },
         },
     ];
