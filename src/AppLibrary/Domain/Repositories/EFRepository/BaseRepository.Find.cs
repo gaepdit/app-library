@@ -36,12 +36,12 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     public Task<TDestination?> FindAsync<TDestination>(TKey id, IMapper mapper, CancellationToken token = default) =>
         FindAsync<TDestination>(entity => entity.Id.Equals(id), mapper, token);
 
-    public Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
+    public async Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
         CancellationToken token = default) =>
-        Context.Set<TEntity>()
+        await Context.Set<TEntity>().AsNoTracking()
             .Where(predicate)
             .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .SingleOrDefaultAsync(token);
+            .SingleOrDefaultAsync(token).ConfigureAwait(false);
 
     // Internal methods
 

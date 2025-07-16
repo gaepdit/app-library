@@ -1,5 +1,4 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using GaEpd.AppLibrary.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -17,46 +16,27 @@ public abstract class NamedEntityRepository<TEntity, TContext>(TContext context)
     where TEntity : class, IEntity, INamedEntity
     where TContext : DbContext
 {
-    public async Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default) =>
-        await Context.Set<TEntity>().AsNoTracking()
-            .SingleOrDefaultAsync(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), token)
-            .ConfigureAwait(false);
+    private const string NamedEntityOrdering = "Name, Id";
 
-    public async Task<TDestination?> FindByNameAsync<TDestination>(string name, IMapper mapper,
+    public Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default) =>
+        FindAsync(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), token);
+
+    public Task<TDestination?> FindByNameAsync<TDestination>(string name, IMapper mapper,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>()
-            .Where(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()))
-            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .SingleOrDefaultAsync(token)
-            .ConfigureAwait(false);
+        FindAsync<TDestination>(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), mapper, token);
 
-    public async Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default) =>
-        await Context.Set<TEntity>().AsNoTracking()
-            .OrderBy(entity => entity.Name)
-            .ThenBy(entity => entity.Id)
-            .ToListAsync(token).ConfigureAwait(false);
+    public Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default) =>
+        GetListAsync(ordering: NamedEntityOrdering, token);
 
-    public async Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(IMapper mapper,
+    public Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(IMapper mapper,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>()
-            .OrderBy(entity => entity.Name)
-            .ThenBy(entity => entity.Id)
-            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .ToListAsync(token).ConfigureAwait(false);
+        GetListAsync<TDestination>(ordering: NamedEntityOrdering, mapper, token);
 
-    public async Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(Expression<Func<TEntity, bool>> predicate,
+    public Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>().AsNoTracking()
-            .Where(predicate)
-            .OrderBy(entity => entity.Name)
-            .ThenBy(entity => entity.Id)
-            .ToListAsync(token).ConfigureAwait(false);
+        GetListAsync(predicate, ordering: NamedEntityOrdering, token);
 
-    public async Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(
+    public Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(
         Expression<Func<TEntity, bool>> predicate, IMapper mapper, CancellationToken token = default) =>
-        await Context.Set<TEntity>()
-            .Where(predicate)
-            .OrderBy(entity => entity.Name).ThenBy(entity => entity.Id)
-            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .ToListAsync(token).ConfigureAwait(false);
+        GetListAsync<TDestination>(predicate, ordering: NamedEntityOrdering, mapper, token);
 }

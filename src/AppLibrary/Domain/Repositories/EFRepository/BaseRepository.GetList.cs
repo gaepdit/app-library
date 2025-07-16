@@ -79,7 +79,7 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
         Expression<Func<TEntity, bool>>? predicate = null, string? ordering = null,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>()
+        await Context.Set<TEntity>().AsNoTracking()
             .WhereIf(predicate)
             .OrderByIf(ordering)
             .ProjectTo<TDestination>(mapper.ConfigurationProvider)
