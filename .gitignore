@@ -539,3 +539,5 @@ FodyWeavers.xsd
 
 ## Build artifacts
 .artifacts/
+
+.idea/.idea.GaEpd.AppLibrary/.idea/misc.xml
