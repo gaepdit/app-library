@@ -41,6 +41,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" />
         <PackageReference Include="GaEpd.GuardClauses" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" />
         <PackageReference Include="SonarAnalyzer.CSharp">

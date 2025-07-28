@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Added overloads to the `Find`, `GetList`, and `GetPagedList` repository methods to enable [query projection using
+  AutoMapper](https://docs.automapper.io/en/stable/Queryable-Extensions.html). The new overloads take a DTO as a type
+  parameter, enabling Entity Framework to create much more efficient SQL queries.
+- **Breaking change:** The `PaginatedRequest` class now requires a non-null, non-empty sorting parameter. Reliable
+  pagination requires a defined ordering, and the class now enforces that.
+- **Breaking change:** The `OrderByIf` extension method now returns an `IQueryable` rather than an `IOrderedQueryable`,
+  meaning it cannot be chained with the `ThenBy` method. (The `ordering` parameter already accommodated ordering by
+  multiple columns.)
+
 ## [6.1.0] - 2025-06-05
 
 - **Breaking change:** Increased the number of overloads in the `IReadRepository` interface by using fewer optional
@@ -72,9 +83,9 @@
 ### Changed
 
 - **Breaking changes:**
-  - Uses of `EntityNotFoundException` will need to be updated to provide the class type. For example,
-    `EntityNotFoundException(typeof(MyEntity), id)` should be replaced with `EntityNotFoundException<MyEntity>(id)`.
-  - References to `IEntity<Guid>` may need to be replaced with `IEntity`.
+    - Uses of `EntityNotFoundException` will need to be updated to provide the class type. For example,
+      `EntityNotFoundException(typeof(MyEntity), id)` should be replaced with `EntityNotFoundException<MyEntity>(id)`.
+    - References to `IEntity<Guid>` may need to be replaced with `IEntity`.
 
 ## [4.1.0] - 2023-11-09
 

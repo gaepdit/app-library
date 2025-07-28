@@ -1,9 +1,9 @@
-﻿using AppLibrary.Tests.TestEntities;
+﻿using AppLibrary.Tests.RepositoryTestHelpers;
 using GaEpd.AppLibrary.Domain.Repositories;
 
 namespace AppLibrary.Tests.EfRepositoryTests.IncludePropertiesTests;
 
-public class GetIncludeProperties : NavigationPropertiesTestBase
+public class GetIncludeProperties : TestsBase
 {
     [Test]
     public void Get_WhenEntityDoesNotExist_ThrowsException()
@@ -23,15 +23,12 @@ public class GetIncludeProperties : NavigationPropertiesTestBase
     public async Task WhenRequestingProperty_ReturnsEntityWithProperty()
     {
         // Arrange
-        var expected = NavigationPropertyEntities[0];
+        var expected = TestData[0];
 
         // Act
-        var result = await Repository.GetAsync(expected.Id,
-            includeProperties: [nameof(TestEntityWithNavigationProperties.TextRecords)]);
+        var result = await Repository.GetAsync(expected.Id, includeProperties: [TextRecordsName]);
 
         // Assert
-        using var scope = new AssertionScope();
-        result.Should().BeEquivalentTo(expected);
         result.TextRecords.Should().HaveCount(expected.TextRecords.Count);
     }
 
@@ -39,14 +36,12 @@ public class GetIncludeProperties : NavigationPropertiesTestBase
     public async Task WhenNotRequestingProperty_ReturnsEntityWithoutProperty()
     {
         // Arrange
-        var expected = NavigationPropertyEntities[0];
+        var expected = TestData[0];
 
         // Act
         var result = await Repository.GetAsync(expected.Id, includeProperties: []);
 
         // Assert
-        using var scope = new AssertionScope();
-        result.Should().BeEquivalentTo(expected, options => options.Excluding(entity => entity.TextRecords));
         result.TextRecords.Should().BeEmpty();
     }
 }

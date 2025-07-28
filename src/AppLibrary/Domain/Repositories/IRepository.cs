@@ -12,7 +12,7 @@ public interface IRepository<TEntity, in TKey> : IReadRepository<TEntity, TKey>,
     where TKey : IEquatable<TKey>;
 
 /// <summary>
-/// A generic repository for entities with Guid primary key with methods for reading and writing data.
+/// A generic repository for entities with <see cref="Guid"/> primary key with methods for reading and writing data.
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
 public interface IRepository<TEntity> : IReadRepository<TEntity, Guid>, IWriteRepository<TEntity, Guid>
