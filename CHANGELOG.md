@@ -1,14 +1,14 @@
 # Changelog
 
-## Unreleased
+## [6.2.0-beta.1] - 2026-07-28
 
 - Added overloads to the `Find`, `GetList`, and `GetPagedList` repository methods to enable [query projection using
   AutoMapper](https://docs.automapper.io/en/stable/Queryable-Extensions.html). The new overloads take a DTO as a type
   parameter, enabling Entity Framework to create much more efficient SQL queries.
-- **Breaking change:** The `PaginatedRequest` class now requires a non-null, non-empty sorting parameter. Reliable
-  pagination requires a defined ordering, and the class now enforces that.
+- **Breaking change:** The `PaginatedRequest` class now requires a non-null, non-empty sorting parameter. (Reliable
+  pagination requires a defined ordering, and the class now enforces that.)
 - **Breaking change:** The `OrderByIf` extension method now returns an `IQueryable` rather than an `IOrderedQueryable`,
-  meaning it cannot be chained with the `ThenBy` method. (The `ordering` parameter already accommodated ordering by
+  meaning it cannot be chained with the `ThenBy` method. (The `ordering` parameter already accommodates ordering by
   multiple columns.)
 
 ## [6.1.0] - 2025-06-05
@@ -146,6 +146,8 @@
 ## [1.0.0] - 2022-10-06
 
 _Initial release._
+
+[6.2.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.1
 
 [6.1.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
 
