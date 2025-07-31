@@ -11,9 +11,7 @@ public class FindByNameAndProject : TestsBase
         var entity = TestDataWithChildProperties[0];
 
         // Act
-        var result =
-            await Repository.FindByNameAsync<NamedEntityWithChildPropertyDto>(
-                entity.Name, Mapper!);
+        var result = await Repository.FindByNameAsync<NamedEntityWithChildPropertyDto>(entity.Name, Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
@@ -25,9 +23,7 @@ public class FindByNameAndProject : TestsBase
     [Test]
     public async Task FindByName_WhenEntityDoesNotExist_ReturnsNull()
     {
-        var result =
-            await Repository.FindByNameAsync<NamedEntityWithChildPropertyDto>("xxx",
-                Mapper!);
+        var result = await Repository.FindByNameAsync<NamedEntityWithChildPropertyDto>("xxx", Mapper!);
 
         result.Should().BeNull();
     }

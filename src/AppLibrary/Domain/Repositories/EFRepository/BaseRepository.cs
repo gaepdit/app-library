@@ -34,13 +34,16 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>(TContext c
         await Context.SaveChangesAsync(token).ConfigureAwait(false);
 
     // Common IReadRepository methods
+
     private IQueryable<TEntity> TrackingSet(string[]? includeProperties) =>
         includeProperties is null || includeProperties.Length == 0
             ? Context.Set<TEntity>()
             : includeProperties.Aggregate(Context.Set<TEntity>().AsQueryable(),
                 (queryable, includeProperty) => queryable.Include(includeProperty));
 
-    private IQueryable<TEntity> NoTrackingSet(string[]? includeProperties = null) =>
+    private IQueryable<TEntity> NoTrackingSet() => Context.Set<TEntity>().AsNoTracking();
+
+    private IQueryable<TEntity> NoTrackingSet(string[]? includeProperties) =>
         TrackingSet(includeProperties).AsNoTracking();
 
     #region IDisposable, IAsyncDisposable
