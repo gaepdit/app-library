@@ -1,13 +1,16 @@
-﻿using GaEpd.AppLibrary.Domain.Entities;
+﻿using AutoMapper;
+using GaEpd.AppLibrary.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace GaEpd.AppLibrary.Domain.Repositories;
 
 /// <summary>
-/// A repository for working with entities that have a <see cref="INamedEntity.Name"/> property.  
+/// A repository for working with entities that have a <see cref="INamedEntity.Name"/> property, with methods for
+/// reading and mapping data to a destination type (DTO).  
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
-public interface INamedEntityRepository<TEntity> : IReadRepository<TEntity, Guid>, IWriteRepository<TEntity, Guid>
+public interface INamedEntityRepositoryWithMapping<TEntity>
+    : INamedEntityRepository<TEntity>, IReadRepositoryWithMapping<TEntity, Guid>
     where TEntity : IEntity, INamedEntity
 {
     /// <summary>
@@ -15,17 +18,20 @@ public interface INamedEntityRepository<TEntity> : IReadRepository<TEntity, Guid
     /// Returns null if the name does not exist.
     /// </summary>
     /// <param name="name">The Name of the SimpleNamedEntity.</param>
+    /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A SimpleNamedEntity entity.</returns>
-    Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default);
+    Task<TDestination?> FindByNameAsync<TDestination>(string name, IMapper mapper, CancellationToken token = default);
 
     /// <summary>
     /// Returns a read-only collection of all <see cref="INamedEntity"/> values ordered by <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if no entities exist.
     /// </summary>
+    /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default);
+    Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(IMapper mapper,
+        CancellationToken token = default);
 
     /// <summary>
     /// Returns a read-only collection of all <see cref="INamedEntity"/> values matching the conditions of
@@ -33,8 +39,9 @@ public interface INamedEntityRepository<TEntity> : IReadRepository<TEntity, Guid
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
+    /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A read-only collection of entities.</returns>
-    Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(Expression<Func<TEntity, bool>> predicate,
-        CancellationToken token = default);
+    Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(Expression<Func<TEntity, bool>> predicate,
+        IMapper mapper, CancellationToken token = default);
 }

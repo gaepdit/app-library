@@ -1,4 +1,3 @@
-using AutoMapper;
 using GaEpd.AppLibrary.Domain.Entities;
 using GaEpd.AppLibrary.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -50,22 +49,6 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
         string ordering, string[] includeProperties, CancellationToken token = default) =>
         GetListInternal(predicate, ordering, includeProperties, token);
 
-    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(IMapper mapper,
-        CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, token: token);
-
-    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(string ordering, IMapper mapper,
-        CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, ordering: ordering, token: token);
-
-    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(Expression<Func<TEntity, bool>> predicate,
-        IMapper mapper, CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, predicate, token: token);
-
-    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(Expression<Func<TEntity, bool>> predicate,
-        string ordering, IMapper mapper, CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, predicate, ordering, token);
-
     // Internal methods
     private async Task<IReadOnlyCollection<TEntity>> GetListInternal(
         Expression<Func<TEntity, bool>>? predicate = null, string? ordering = null,
@@ -74,12 +57,4 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
             .WhereIf(predicate)
             .OrderByIf(ordering)
             .ToListAsync(token).ConfigureAwait(false);
-
-    private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
-        Expression<Func<TEntity, bool>>? predicate = null, string? ordering = null,
-        CancellationToken token = default) =>
-        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
-            .WhereIf(predicate)
-            .OrderByIf(ordering)
-        ).ToListAsync(token).ConfigureAwait(false);
 }

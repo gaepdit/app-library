@@ -5,7 +5,7 @@ using GaEpd.AppLibrary.Domain.Repositories.LocalRepository;
 namespace AppLibrary.Tests.LocalRepositoryTests.ProjectToTests;
 
 public class TestRepository(IEnumerable<EntityWithChildProperty> items)
-    : BaseRepository<EntityWithChildProperty, Guid>(items)
+    : BaseRepositoryWithMapping<EntityWithChildProperty, Guid>(items)
 {
     public static TestRepository GetRepository(IEnumerable<EntityWithChildProperty> testData) => new(testData);
 }
@@ -45,7 +45,6 @@ public abstract class TestsBase
     public async Task TearDown() => await Repository.DisposeAsync();
 
     [OneTimeSetUp]
-    public void OneTimeSetUp() =>
-        Mapper = new MapperConfiguration(configuration => configuration.AddProfile(new TestAutoMapperProfile()))
-            .CreateMapper();
+    public void OneTimeSetUp() => Mapper = new MapperConfiguration(configuration =>
+        configuration.AddProfile(new TestAutoMapperProfile())).CreateMapper();
 }

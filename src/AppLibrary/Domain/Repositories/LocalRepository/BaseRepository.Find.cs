@@ -1,4 +1,3 @@
-using AutoMapper;
 using GaEpd.AppLibrary.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -29,14 +28,6 @@ public abstract partial class BaseRepository<TEntity, TKey>
     public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[] includeProperties,
         CancellationToken token = default) =>
         FindInternal(predicate);
-
-    public Task<TDestination?> FindAsync<TDestination>(TKey id, IMapper mapper, CancellationToken token = default) =>
-        FindAsync<TDestination>(entity => entity.Id.Equals(id), mapper, token);
-
-    public async Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
-        CancellationToken token = default) =>
-        await Task.FromResult(mapper.Map<TDestination?>(Items.SingleOrDefault(predicate.Compile())))
-            .ConfigureAwait(false);
 
     // Internal methods
     private Task<TEntity?> FindInternal(TKey id) => FindInternal(entity => entity.Id.Equals(id));

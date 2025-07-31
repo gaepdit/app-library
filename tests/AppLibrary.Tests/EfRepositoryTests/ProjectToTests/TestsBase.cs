@@ -4,7 +4,8 @@ using GaEpd.AppLibrary.Domain.Repositories.EFRepository;
 
 namespace AppLibrary.Tests.EfRepositoryTests.ProjectToTests;
 
-public class ProjectToRepository(AppDbContext context) : BaseRepository<EntityWithChildProperty, AppDbContext>(context);
+public class ProjectToRepository(AppDbContext context)
+    : BaseRepositoryWithMapping<EntityWithChildProperty, AppDbContext>(context);
 
 public abstract class TestsBase
 {
@@ -44,7 +45,6 @@ public abstract class TestsBase
     }
 
     [OneTimeSetUp]
-    public void OneTimeSetUp() =>
-        Mapper = new MapperConfiguration(configuration => configuration.AddProfile(new TestAutoMapperProfile()))
-            .CreateMapper();
+    public void OneTimeSetUp() => Mapper = new MapperConfiguration(configuration =>
+        configuration.AddProfile(new TestAutoMapperProfile())).CreateMapper();
 }

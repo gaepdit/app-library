@@ -1,4 +1,3 @@
-using AutoMapper;
 using GaEpd.AppLibrary.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
@@ -32,17 +31,7 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
         CancellationToken token = default) =>
         FindInternal(predicate, includeProperties, token);
 
-    public Task<TDestination?> FindAsync<TDestination>(TKey id, IMapper mapper, CancellationToken token = default) =>
-        FindAsync<TDestination>(entity => entity.Id.Equals(id), mapper, token);
-
-    public async Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
-        CancellationToken token = default) =>
-        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
-            .Where(predicate)
-        ).SingleOrDefaultAsync(token).ConfigureAwait(false);
-
     // Internal methods
-
     private Task<TEntity?> FindInternal(TKey id, string[]? includeProperties = null,
         CancellationToken token = default) =>
         FindInternal(entity => entity.Id.Equals(id), includeProperties, token);

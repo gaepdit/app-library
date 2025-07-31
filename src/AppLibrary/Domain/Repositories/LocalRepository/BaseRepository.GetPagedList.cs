@@ -1,4 +1,3 @@
-using AutoMapper;
 using GaEpd.AppLibrary.Domain.Entities;
 using GaEpd.AppLibrary.Extensions;
 using GaEpd.AppLibrary.Pagination;
@@ -37,24 +36,9 @@ public abstract partial class BaseRepository<TEntity, TKey>
         string[] includeProperties, CancellationToken token = default) =>
         GetPagedListInternal(paging);
 
-    public Task<IReadOnlyCollection<TDestination>> GetPagedListAsync<TDestination>(
-        Expression<Func<TEntity, bool>> predicate, PaginatedRequest paging, IMapper mapper,
-        CancellationToken token = default) =>
-        GetPagedListInternal<TDestination>(mapper, paging, predicate);
-
-    public Task<IReadOnlyCollection<TDestination>> GetPagedListAsync<TDestination>(PaginatedRequest paging,
-        IMapper mapper, CancellationToken token = default) =>
-        GetPagedListInternal<TDestination>(mapper, paging);
-
     // Internal methods
     private async Task<IReadOnlyCollection<TEntity>> GetPagedListInternal(PaginatedRequest paging,
         Expression<Func<TEntity, bool>>? predicate = null) =>
         await Task.FromResult<IReadOnlyCollection<TEntity>>(Items.WhereIf(predicate).OrderBy(paging.Sorting)
             .Skip(paging.Skip).Take(paging.Take).ToList()).ConfigureAwait(false);
-
-    private async Task<IReadOnlyCollection<TDestination>> GetPagedListInternal<TDestination>(IMapper mapper,
-        PaginatedRequest paging, Expression<Func<TEntity, bool>>? predicate = null) =>
-        await Task.FromResult(mapper.Map<IReadOnlyCollection<TDestination>>(Items.WhereIf(predicate)
-            .OrderBy(paging.Sorting)
-            .Skip(paging.Skip).Take(paging.Take).ToList())).ConfigureAwait(false);
 }

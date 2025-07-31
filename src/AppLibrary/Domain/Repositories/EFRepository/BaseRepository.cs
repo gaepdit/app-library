@@ -41,7 +41,7 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>(TContext c
             : includeProperties.Aggregate(Context.Set<TEntity>().AsQueryable(),
                 (queryable, includeProperty) => queryable.Include(includeProperty));
 
-    private IQueryable<TEntity> NoTrackingSet() => Context.Set<TEntity>().AsNoTracking();
+    protected IQueryable<TEntity> NoTrackingSet() => Context.Set<TEntity>().AsNoTracking();
 
     private IQueryable<TEntity> NoTrackingSet(string[]? includeProperties) =>
         TrackingSet(includeProperties).AsNoTracking();
