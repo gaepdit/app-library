@@ -1,5 +1,4 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using GaEpd.AppLibrary.Domain.Entities;
 using GaEpd.AppLibrary.Extensions;
 using GaEpd.AppLibrary.Pagination;
@@ -59,9 +58,8 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     private async Task<IReadOnlyCollection<TDestination>> GetPagedListInternal<TDestination>(IMapper mapper,
         PaginatedRequest paging, Expression<Func<TEntity, bool>>? predicate = null,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>().AsNoTracking()
+        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
             .WhereIf(predicate)
             .ApplyPaging(paging)
-            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .ToListAsync(token).ConfigureAwait(false);
+        ).ToListAsync(token).ConfigureAwait(false);
 }

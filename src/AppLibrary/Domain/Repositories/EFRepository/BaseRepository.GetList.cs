@@ -1,5 +1,4 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using GaEpd.AppLibrary.Domain.Entities;
 using GaEpd.AppLibrary.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -79,9 +78,8 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
         Expression<Func<TEntity, bool>>? predicate = null, string? ordering = null,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>().AsNoTracking()
+        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
             .WhereIf(predicate)
             .OrderByIf(ordering)
-            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .ToListAsync(token).ConfigureAwait(false);
+        ).ToListAsync(token).ConfigureAwait(false);
 }

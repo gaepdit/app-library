@@ -1,5 +1,4 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using GaEpd.AppLibrary.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
@@ -38,10 +37,9 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
 
     public async Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
         CancellationToken token = default) =>
-        await Context.Set<TEntity>().AsNoTracking()
+        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
             .Where(predicate)
-            .ProjectTo<TDestination>(mapper.ConfigurationProvider)
-            .SingleOrDefaultAsync(token).ConfigureAwait(false);
+        ).SingleOrDefaultAsync(token).ConfigureAwait(false);
 
     // Internal methods
 

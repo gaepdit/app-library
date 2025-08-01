@@ -36,8 +36,7 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!await Context.Set<TEntity>().AsNoTracking()
-                    .AnyAsync(e => e.Id.Equals(entity.Id), token).ConfigureAwait(false))
+            if (!await NoTrackingSet().AnyAsync(e => e.Id.Equals(entity.Id), token).ConfigureAwait(false))
                 throw new EntityNotFoundException<TEntity>(entity.Id);
             throw;
         }
@@ -53,8 +52,7 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!await Context.Set<TEntity>().AsNoTracking()
-                    .AnyAsync(e => e.Id.Equals(entity.Id), token).ConfigureAwait(false))
+            if (!await NoTrackingSet().AnyAsync(e => e.Id.Equals(entity.Id), token).ConfigureAwait(false))
                 throw new EntityNotFoundException<TEntity>(entity.Id);
             throw;
         }
