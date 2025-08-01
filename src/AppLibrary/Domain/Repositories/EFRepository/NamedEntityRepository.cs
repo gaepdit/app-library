@@ -1,4 +1,3 @@
-using AutoMapper;
 using GaEpd.AppLibrary.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -21,22 +20,10 @@ public abstract class NamedEntityRepository<TEntity, TContext>(TContext context)
     public Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default) =>
         FindAsync(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), token);
 
-    public Task<TDestination?> FindByNameAsync<TDestination>(string name, IMapper mapper,
-        CancellationToken token = default) =>
-        FindAsync<TDestination>(entity => string.Equals(entity.Name.ToUpper(), name.ToUpper()), mapper, token);
-
     public Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default) =>
         GetListAsync(ordering: NamedEntityOrdering, token);
-
-    public Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(IMapper mapper,
-        CancellationToken token = default) =>
-        GetListAsync<TDestination>(ordering: NamedEntityOrdering, mapper, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken token = default) =>
         GetListAsync(predicate, ordering: NamedEntityOrdering, token);
-
-    public Task<IReadOnlyCollection<TDestination>> GetOrderedListAsync<TDestination>(
-        Expression<Func<TEntity, bool>> predicate, IMapper mapper, CancellationToken token = default) =>
-        GetListAsync<TDestination>(predicate, ordering: NamedEntityOrdering, mapper, token);
 }

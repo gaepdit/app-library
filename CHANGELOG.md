@@ -1,10 +1,16 @@
 # Changelog
 
+## [6.2.0-beta.2] - 2026-08-01
+
+- **Breaking change from v6.2.0-beta.1:** The overloads introducing DTO query projection have been moved to separate
+  repositories, allowing client applications to opt in if desired. The new repositories use the "WithMapping" suffix,
+  e.g., `IReadRepositoryWithMapping`.
+
 ## [6.2.0-beta.1] - 2026-07-28
 
 - Added overloads to the `Find`, `GetList`, and `GetPagedList` repository methods to enable [query projection using
-  AutoMapper](https://docs.automapper.io/en/stable/Queryable-Extensions.html). The new overloads take a DTO as a type
-  parameter, enabling Entity Framework to create much more efficient SQL queries.
+  AutoMapper](https://docs.automapper.io/en/stable/Queryable-Extensions.html). The new overloads take a destination DTO
+  as a type parameter, enabling Entity Framework to create much more efficient SQL queries.
 - **Breaking change:** The `PaginatedRequest` class now requires a non-null, non-empty sorting parameter. (Reliable
   pagination requires a defined ordering, and the class now enforces that.)
 - **Breaking change:** The `OrderByIf` extension method now returns an `IQueryable` rather than an `IOrderedQueryable`,

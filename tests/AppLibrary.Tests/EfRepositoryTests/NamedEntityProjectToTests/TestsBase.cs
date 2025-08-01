@@ -5,7 +5,7 @@ using GaEpd.AppLibrary.Domain.Repositories.EFRepository;
 namespace AppLibrary.Tests.EfRepositoryTests.NamedEntityProjectToTests;
 
 public class NamedEntityWithChildPropertyRepository(AppDbContext context)
-    : NamedEntityRepository<NamedEntityWithChildProperty, AppDbContext>(context);
+    : NamedEntityRepositoryWithMapping<NamedEntityWithChildProperty, AppDbContext>(context);
 
 public abstract class TestsBase
 {
@@ -40,7 +40,6 @@ public abstract class TestsBase
     }
 
     [OneTimeSetUp]
-    public void OneTimeSetUp() =>
-        Mapper = new MapperConfiguration(configuration => configuration.AddProfile(new TestAutoMapperProfile()))
-            .CreateMapper();
+    public void OneTimeSetUp() => Mapper = new MapperConfiguration(configuration =>
+        configuration.AddProfile(new TestAutoMapperProfile())).CreateMapper();
 }

@@ -5,7 +5,7 @@ using GaEpd.AppLibrary.Domain.Repositories.LocalRepository;
 namespace AppLibrary.Tests.LocalRepositoryTests.NamedEntityProjectToTests;
 
 public class NamedEntityWithChildPropertyRepository(IEnumerable<NamedEntityWithChildProperty> items)
-    : NamedEntityRepository<NamedEntityWithChildProperty>(items)
+    : NamedEntityRepositoryWithMapping<NamedEntityWithChildProperty>(items)
 {
     public static NamedEntityWithChildPropertyRepository GetRepository(
         IEnumerable<NamedEntityWithChildProperty> testData) => new(testData);
@@ -18,7 +18,7 @@ public abstract class TestsBase
 
     protected const string UsefulSuffix = "def";
 
-    public static readonly List<NamedEntityWithChildProperty> TestData =
+    protected static readonly List<NamedEntityWithChildProperty> TestData =
     [
         new(id: Guid.NewGuid(), name: "Abc abc")
             { TextRecord = new TextRecord { Id = Guid.NewGuid(), Text = "Apple" } },
@@ -35,7 +35,6 @@ public abstract class TestsBase
     public async Task TearDown() => await Repository.DisposeAsync();
 
     [OneTimeSetUp]
-    public void OneTimeSetUp() =>
-        Mapper = new MapperConfiguration(configuration => configuration.AddProfile(new TestAutoMapperProfile()))
-            .CreateMapper();
+    public void OneTimeSetUp() => Mapper = new MapperConfiguration(configuration =>
+        configuration.AddProfile(new TestAutoMapperProfile())).CreateMapper();
 }

@@ -21,7 +21,7 @@ To install, search for "GaEpd.AppLibrary" in the NuGet package manager or run th
 
 ### Domain entities
 
-The following interfaces and abstract implementations of domain entities are provided for domain driven design:
+The following interfaces and abstract implementations of domain entities are provided for domain-driven design:
 
 * The basic `IEntity<TKey>` interface defines an entity with a primary key of the given type.
 * The special case `IEntity` interface defines an entity with a `GUID` primary key.
@@ -36,18 +36,19 @@ entities: `Entity<TKey>`, `AuditableEntity<TKey, TUserKey>`, `SoftDeleteEntity<T
 `AuditableSoftDeleteEntity<TKey, TUserKey>`, and `StandardNamedEntity`.
 
 The `StandardNamedEntity` class derives from `AuditableEntity<Guid>`, `INamedEntity`, and `IActiveEntity`, and includes
-methods for enforcing the length of the `Name`. Maximum and minimum name length can be set in the constructor.
+methods for enforcing the length of the `Name`. Maximum and minimum length for the name can be set by overriding the
+default properties.
 
 Example usage:
 
 ```csharp
-public class DerivedNamedEntity : StandardNamedEntity
+public class MyEntity : StandardNamedEntity
 {
     public override int MinNameLength => 2;
     public override int MaxNameLength => 50;
 
-    public DerivedNamedEntity() { }
-    public DerivedNamedEntity(Guid id, string name) : base(id, name) { }
+    public MyEntity() { }
+    public MyEntity(Guid id, string name) : base(id, name) { }
 }
 ```
 
@@ -57,8 +58,8 @@ An abstract ValueObject record can help add value objects to your domain entitie
 A [value object](https://www.martinfowler.com/bliki/ValueObject.html) is a compound of properties, such as an address or
 date range, that are comparable based solely on their values rather than their references. The properties of a value
 object are typically stored with its parent class, not as a separate record with its own ID. Value objects should be
-treated as immutable. When deriving from `ValueObject`, you must provide a `GetEqualityComponents()` method to define
-which properties to use to determine equality.
+treated as immutable. When deriving from `ValueObject`, you must override the `GetEqualityComponents()` method to
+define which properties to use to determine equality.
 
 Example usage:
 
@@ -91,29 +92,55 @@ this is implemented in EF Core.
 
 ### Data Repositories
 
-Common data repository interfaces define basic entity CRUD operations. The `IReadRepository` interface defines get and
-search operations (including paginated search). The `IWriteRepository` interface defines insert, update, and delete
-operations. `IRepository` combines the read and write interfaces. Finally, the `INamedEntityRepository` adds a
-find-by-name method.
+Common data repository interfaces define basic entity CRUD operations.
 
-(Note that these interfaces work directly with domain entities. Your application should define
-[application/domain services](https://docs.abp.io/en/abp/latest/Domain-Services#application-services-vs-domain-services)
-that define how the application interacts with the entities & repositories through data transfer objects (DTOs).)
+* The `IReadRepository` interface defines various read-only operations: Get, Find, Count, Exists, GetList, and
+  GetPagedList. (The Get and Find methods both return an entity, but Get enables the Entity Framework change tracker
+  while Find disables it. Also, if an entity is not found, then Get throws an `EntityNotFoundException` while Find
+  returns null. Read more
+  about [Tracking vs. No-Tracking Queries](https://learn.microsoft.com/en-us/ef/core/querying/tracking).)
+* The `IWriteRepository` interface defines various write operations: Insert, Update, and Delete.
+* `IRepository` combines the above read and write interfaces.
+* `INamedEntityRepository` derives from `IRepository` and adds some methods useful for entities expected to have
+  unique names (i.e., entities implementing `INamedEntity`).
+* `IReadRepositoryWithMapping` adds overloads to the Find, GetList, and GetPagedList methods that use query projection
+  to return data transfer objects (DTOs) rather than complete entities. Use of these methods enables Entity Framework to
+  create much more efficient SQL queries.
+* `IRepositoryWithMapping` and `INamedEntityRepositoryWithMapping` similarly include the query projection overloads.
 
-There are two abstract `BaseRepository` classes that each implement the `IRepository` interface, one using in-memory
-data and the other requiring an Entity Framework database context.
+#### Repository Implementations
 
-There are similarly two abstract `NamedEntityRepository` classes that each implement the `INamedEntityRepository`
-interface.
+There are two sets of abstract repository classes that implement the `IRepository`, `IRepositoryWithMapping`,
+`INamedEntityRepository`, and `INamedEntityRepositoryWithMapping` interfaces. Client applications can derive from either
+or both of these implementations.
+
+* One set (in the `LocalRepository` namespace) uses in-memory data (convenient for use during development when the
+  overhead of a database is undesirable).
+* The other set (in the `EFRepository` namespace) requires an Entity Framework database context (`DbContext`).
 
 Example usage:
 
 ```csharp
-public interface IDerivedRepository : INamedEntityRepository<DerivedNamedEntity> { }
+public interface IMyRepository : INamedEntityRepository<MyEntity> { }
 
-public sealed class DerivedRepository : NamedEntityRepository<DerivedNamedEntity, AppDbContext>, IDerivedRepository
+public sealed class MyInMemoryRepository 
+    : LocalRepository.NamedEntityRepository<MyEntity>(MyEntitySeedData), IMyRepository;
+
+public sealed class MyEfRepository(AppDbContext context)
+    : EFRepository.NamedEntityRepository<MyEntity, AppDbContext>(context), IMyRepository;
+```
+
+Then you can use the desired implementation based on the app environment, for example:
+
+```csharp
+
+if (builder.Environment.IsDevelopment())
 {
-    public DerivedRepository(AppDbContext context) : base(context) { }
+    builder.Services.AddSingleton<IMyRepository, MyInMemoryRepository>();    
+}
+else
+{
+    builder.Services.AddScoped<IMyRepository, MyEfRepository>();    
 }
 
 ```
@@ -154,8 +181,3 @@ enum, respectively.
 ### Guard clauses
 
 The [GuardClauses](https://github.com/gaepdit/guard-clauses) package is included by reference.
-
-## What's not included
-
-The [File Service](https://github.com/gaepdit/file-service) and [GuardClauses](https://github.com/gaepdit/guard-clauses)
-packages have been moved to separate repositories.
