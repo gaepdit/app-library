@@ -7,6 +7,8 @@ namespace GaEpd.AppLibrary.Domain.Repositories.LocalRepository;
 /// a <see cref="Guid"/> primary key.
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
+/// <remarks>Navigation properties are already included when using in-memory data structures,
+/// so any `includeProperties` parameters are ignored.</remarks>
 public abstract class BaseRepository<TEntity>(IEnumerable<TEntity> items)
     : BaseRepository<TEntity, Guid>(items), IRepository<TEntity>
     where TEntity : class, IEntity;

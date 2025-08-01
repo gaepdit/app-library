@@ -17,11 +17,14 @@ public abstract class NamedEntityRepository<TEntity>(IEnumerable<TEntity> items)
             string.Equals(entity.Name, name, StringComparison.OrdinalIgnoreCase))).ConfigureAwait(false);
 
     public async Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default) =>
-        await Task.FromResult<IReadOnlyCollection<TEntity>>(Items.OrderBy(entity => entity.Name)
-            .ThenBy(entity => entity.Id).ToList()).ConfigureAwait(false);
+        await Task.FromResult<IReadOnlyCollection<TEntity>>(Items
+            .OrderBy(entity => entity.Name).ThenBy(entity => entity.Id)
+            .ToList()).ConfigureAwait(false);
 
     public async Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken token = default) =>
-        await Task.FromResult<IReadOnlyCollection<TEntity>>(Items.Where(predicate.Compile())
-            .OrderBy(entity => entity.Name).ThenBy(entity => entity.Id).ToList()).ConfigureAwait(false);
+        await Task.FromResult<IReadOnlyCollection<TEntity>>(Items
+            .Where(predicate.Compile())
+            .OrderBy(entity => entity.Name).ThenBy(entity => entity.Id)
+            .ToList()).ConfigureAwait(false);
 }

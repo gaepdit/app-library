@@ -5,7 +5,7 @@ namespace GaEpd.AppLibrary.Domain.Repositories;
 public partial interface IReadRepository<TEntity, in TKey>
 {
     /// <summary>
-    /// Returns a read-only collection of all <see cref="TEntity"/> values.
+    /// Returns a read-only collection of all <see cref="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
@@ -13,7 +13,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<IReadOnlyCollection<TEntity>> GetListAsync(CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="TEntity"/> values.
+    /// Returns a read-only collection of all <see cref="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="ordering">An expression string to indicate values to order by.</param>
@@ -22,7 +22,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<IReadOnlyCollection<TEntity>> GetListAsync(string ordering, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="TEntity"/> values.
+    /// Returns a read-only collection of all <see cref="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="includeProperties">Navigation properties to include (when using an Entity Framework repository).</param>
@@ -31,7 +31,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<IReadOnlyCollection<TEntity>> GetListAsync(string[] includeProperties, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="TEntity"/> values.
+    /// Returns a read-only collection of all <see cref="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="ordering">An expression string to indicate values to order by.</param>

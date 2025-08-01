@@ -34,7 +34,6 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>(TContext c
         await Context.SaveChangesAsync(token).ConfigureAwait(false);
 
     // Common IReadRepository methods
-
     private IQueryable<TEntity> TrackingSet(string[]? includeProperties) =>
         includeProperties is null || includeProperties.Length == 0
             ? Context.Set<TEntity>()

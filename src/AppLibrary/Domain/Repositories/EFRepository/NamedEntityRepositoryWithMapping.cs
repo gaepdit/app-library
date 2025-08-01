@@ -6,8 +6,9 @@ using System.Linq.Expressions;
 namespace GaEpd.AppLibrary.Domain.Repositories.EFRepository;
 
 /// <summary>
-/// An implementation of <see cref="INamedEntityRepository{TEntity}"/> using Entity Framework. The implementation is
-/// derived from <see cref="BaseRepository{TEntity,TContext}"/> and uses a <see cref="Guid"/> for the primary key.
+/// An implementation of <see cref="INamedEntityRepositoryWithMapping{TEntity}"/> using Entity Framework. The
+/// implementation is derived from <see cref="BaseRepositoryWithMapping{TEntity,TContext}"/> and uses
+/// a <see cref="Guid"/> for the primary key.
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
 /// <typeparam name="TContext">The type of the <see cref="DbContext"/>.</typeparam>

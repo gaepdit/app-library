@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GaEpd.AppLibrary.Domain.Repositories.EFRepository;
 
 /// <summary>
-/// An implementation of <see cref="IRepository{TEntity,TKey}"/> using Entity Framework where TKey is
+/// An implementation of <see cref="IRepositoryWithMapping{TEntity,TKey}"/> using Entity Framework where TKey is
 /// a <see cref="Guid"/> primary key.
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
@@ -16,7 +16,7 @@ public abstract class BaseRepositoryWithMapping<TEntity, TContext>(TContext cont
     where TContext : DbContext;
 
 /// <summary>
-/// An implementation of <see cref="IRepository{TEntity,TKey}"/> using Entity Framework.
+/// An implementation of <see cref="IRepositoryWithMapping{TEntity,TKey}"/> using Entity Framework.
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
 /// <typeparam name="TKey">The primary key type for the entity.</typeparam>

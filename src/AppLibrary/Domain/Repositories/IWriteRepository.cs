@@ -40,7 +40,7 @@ public interface IWriteRepository<in TEntity, in TKey> : IDisposable, IAsyncDisp
     Task DeleteAsync(TEntity entity, bool autoSave = true, CancellationToken token = default);
 
     /// <summary>
-    /// Saves all changes to the repository. Only use by repositories that require explicit calls to save changes
+    /// Saves all changes to the repository. Only used by repositories that require explicit calls to save changes
     /// and when the autoSave parameter is set to false in one of the other methods.
     /// </summary>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>

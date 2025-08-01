@@ -6,8 +6,8 @@ namespace GaEpd.AppLibrary.Domain.Repositories;
 public partial interface IReadRepository<TEntity, in TKey>
 {
     /// <summary>
-    /// Returns a filtered, read-only collection of <see cref="TEntity"/> matching the conditions of the
-    /// <paramref name="predicate"/>. Returns an empty collection if there are no matches.
+    /// Returns a paginated read-only collection of <see cref="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
+    /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
     /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
@@ -17,8 +17,8 @@ public partial interface IReadRepository<TEntity, in TKey>
         PaginatedRequest paging, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a filtered, read-only collection of <see cref="TEntity"/> matching the conditions of the
-    /// <paramref name="predicate"/>. Returns an empty collection if there are no matches.
+    /// Returns a paginated read-only collection of <see cref="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
+    /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
     /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
@@ -29,7 +29,7 @@ public partial interface IReadRepository<TEntity, in TKey>
         PaginatedRequest paging, string[] includeProperties, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a filtered, read-only collection of all <see cref="TEntity"/> values.
+    /// Returns a paginated read-only collection of all <see cref="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>
@@ -38,7 +38,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a filtered, read-only collection of all <see cref="TEntity"/> values.
+    /// Returns a paginated read-only collection of all <see cref="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="paging">A <see cref="PaginatedRequest"/> to define the paging options.</param>

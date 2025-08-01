@@ -20,7 +20,7 @@ public interface INamedEntityRepository<TEntity> : IReadRepository<TEntity, Guid
     Task<TEntity?> FindByNameAsync(string name, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="INamedEntity"/> values ordered by <see cref="INamedEntity.Name"/>.
+    /// Returns a read-only collection of <see cref="TEntity"/> ordered by <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if no entities exist.
     /// </summary>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
@@ -28,8 +28,8 @@ public interface INamedEntityRepository<TEntity> : IReadRepository<TEntity, Guid
     Task<IReadOnlyCollection<TEntity>> GetOrderedListAsync(CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="INamedEntity"/> values matching the conditions of
-    /// the <paramref name="predicate"/> and ordered by <see cref="INamedEntity.Name"/>.
+    /// Returns a read-only collection of <see cref="TEntity"/> matching the conditions of
+    /// the <paramref name="predicate"/> ordered by <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>

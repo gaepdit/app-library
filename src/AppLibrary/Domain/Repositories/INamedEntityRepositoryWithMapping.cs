@@ -14,9 +14,11 @@ public interface INamedEntityRepositoryWithMapping<TEntity>
     where TEntity : IEntity, INamedEntity
 {
     /// <summary>
-    /// Returns the <see cref="TEntity"/> with the given <paramref name="name"/>.
+    /// Returns the <typeparamref name="TDestination"/> projection of the <see cref="TEntity"/> with the given
+    /// <paramref name="name"/>.
     /// Returns null if the name does not exist.
     /// </summary>
+    /// <typeparam name="TDestination">The destination type.</typeparam>
     /// <param name="name">The Name of the SimpleNamedEntity.</param>
     /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
@@ -24,9 +26,11 @@ public interface INamedEntityRepositoryWithMapping<TEntity>
     Task<TDestination?> FindByNameAsync<TDestination>(string name, IMapper mapper, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="INamedEntity"/> values ordered by <see cref="INamedEntity.Name"/>.
+    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of <see cref="TEntity"/>
+    /// ordered by <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if no entities exist.
     /// </summary>
+    /// <typeparam name="TDestination">The destination type.</typeparam>
     /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
     /// <returns>A read-only collection of entities.</returns>
@@ -34,10 +38,11 @@ public interface INamedEntityRepositoryWithMapping<TEntity>
         CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of all <see cref="INamedEntity"/> values matching the conditions of
-    /// the <paramref name="predicate"/> and ordered by <see cref="INamedEntity.Name"/>.
+    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of <see cref="TEntity"/>
+    /// matching the conditions of the <paramref name="predicate"/> and ordered by <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if there are no matches.
     /// </summary>
+    /// <typeparam name="TDestination">The destination type.</typeparam>
     /// <param name="predicate">The search conditions.</param>
     /// <param name="mapper">An instance of the <see cref="IMapper"/> defined in the consumer.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
