@@ -2,6 +2,8 @@
 
 ## [6.2.0-beta.2] - 2026-08-01
 
+- **Breaking change:** No-tracking queries now use identity resolution if that is the default tracking behavior set for
+  the DB context (i.e., `QueryTrackingBehavior.NoTrackingWithIdentityResolution`).
 - **Breaking change from v6.2.0-beta.1:** The overloads introducing DTO query projection have been moved to separate
   repositories, allowing client applications to opt in if desired. The new repositories use the "WithMapping" suffix,
   e.g., `IReadRepositoryWithMapping`.
