@@ -34,16 +34,21 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>(TContext c
         await Context.SaveChangesAsync(token).ConfigureAwait(false);
 
     // Common IReadRepository methods
-    private IQueryable<TEntity> TrackingSet(string[]? includeProperties) =>
-        includeProperties is null || includeProperties.Length == 0
-            ? Context.Set<TEntity>()
-            : includeProperties.Aggregate(Context.Set<TEntity>().AsQueryable(),
-                (queryable, includeProperty) => queryable.Include(includeProperty));
+    private static IQueryable<TEntity> SetWithIncludes(IQueryable<TEntity> entities, string[]? includes) =>
+        includes is null || includes.Length == 0
+            ? entities
+            : includes.Aggregate(entities, (queryable, property) => queryable.Include(property));
 
-    protected IQueryable<TEntity> NoTrackingSet() => Context.Set<TEntity>().AsNoTracking();
+    protected IQueryable<TEntity> NoTrackingSet() =>
+        Context.ChangeTracker.QueryTrackingBehavior == QueryTrackingBehavior.NoTrackingWithIdentityResolution
+            ? Context.Set<TEntity>().AsNoTrackingWithIdentityResolution()
+            : Context.Set<TEntity>().AsNoTracking();
 
     private IQueryable<TEntity> NoTrackingSet(string[]? includeProperties) =>
-        TrackingSet(includeProperties).AsNoTracking();
+        SetWithIncludes(NoTrackingSet(), includeProperties);
+
+    private IQueryable<TEntity> TrackingSet(string[]? includeProperties) =>
+        SetWithIncludes(Context.Set<TEntity>().AsTracking(), includeProperties);
 
     #region IDisposable, IAsyncDisposable
 
