@@ -14,15 +14,15 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey, TContext>
     // GetListAsync
     public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(IMapper mapper,
         CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, token: token);
+        GetListInternal<TDestination>(mapper, predicate: null, ordering: null, token);
 
     public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(string ordering, IMapper mapper,
         CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, ordering: ordering, token: token);
+        GetListInternal<TDestination>(mapper, predicate: null, ordering, token);
 
     public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(Expression<Func<TEntity, bool>> predicate,
         IMapper mapper, CancellationToken token = default) =>
-        GetListInternal<TDestination>(mapper, predicate, token: token);
+        GetListInternal<TDestination>(mapper, predicate, ordering: null, token);
 
     public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination>(Expression<Func<TEntity, bool>> predicate,
         string ordering, IMapper mapper, CancellationToken token = default) =>
@@ -30,8 +30,7 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey, TContext>
 
     // Internal methods
     private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
-        Expression<Func<TEntity, bool>>? predicate = null, string? ordering = null,
-        CancellationToken token = default) =>
+        Expression<Func<TEntity, bool>>? predicate, string? ordering, CancellationToken token) =>
         await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
             .WhereIf(predicate)
             .OrderByIf(ordering)

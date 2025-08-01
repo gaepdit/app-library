@@ -12,39 +12,38 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
 {
     // GetListAsync
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(CancellationToken token = default) =>
-        GetListInternal(token: token);
+        GetListInternal(predicate: null, ordering: null, includeProperties: null, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(string ordering, CancellationToken token = default) =>
-        GetListInternal(ordering: ordering, token: token);
+        GetListInternal(predicate: null, ordering, includeProperties: null, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(string[] includeProperties,
         CancellationToken token = default) =>
-        GetListInternal(includeProperties: includeProperties, token: token);
+        GetListInternal(predicate: null, ordering: null, includeProperties, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(string ordering, string[] includeProperties,
         CancellationToken token = default) =>
-        GetListInternal(ordering: ordering, includeProperties: includeProperties, token: token);
+        GetListInternal(predicate: null, ordering, includeProperties, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken token = default) =>
-        GetListInternal(predicate, token: token);
+        GetListInternal(predicate, ordering: null, includeProperties: null, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, string ordering,
         CancellationToken token = default) =>
-        GetListInternal(predicate, ordering, token: token);
+        GetListInternal(predicate, ordering, includeProperties: null, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
         string[] includeProperties, CancellationToken token = default) =>
-        GetListInternal(predicate, includeProperties: includeProperties, token: token);
+        GetListInternal(predicate, ordering: null, includeProperties, token);
 
     public Task<IReadOnlyCollection<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate,
         string ordering, string[] includeProperties, CancellationToken token = default) =>
         GetListInternal(predicate, ordering, includeProperties, token);
 
     // Internal methods
-    private async Task<IReadOnlyCollection<TEntity>> GetListInternal(
-        Expression<Func<TEntity, bool>>? predicate = null, string? ordering = null,
-        string[]? includeProperties = null, CancellationToken token = default) =>
+    private async Task<IReadOnlyCollection<TEntity>> GetListInternal(Expression<Func<TEntity, bool>>? predicate,
+        string? ordering, string[]? includeProperties, CancellationToken token) =>
         await NoTrackingSet(includeProperties)
             .WhereIf(predicate)
             .OrderByIf(ordering)

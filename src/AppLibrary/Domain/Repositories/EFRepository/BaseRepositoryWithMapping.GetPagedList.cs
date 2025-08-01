@@ -15,7 +15,7 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey, TContext>
     // GetPagedListAsync
     public Task<IReadOnlyCollection<TDestination>> GetPagedListAsync<TDestination>(PaginatedRequest paging,
         IMapper mapper, CancellationToken token = default) =>
-        GetPagedListInternal<TDestination>(mapper, paging, token: token);
+        GetPagedListInternal<TDestination>(mapper, paging, predicate: null, token);
 
     public Task<IReadOnlyCollection<TDestination>> GetPagedListAsync<TDestination>(
         Expression<Func<TEntity, bool>> predicate, PaginatedRequest paging, IMapper mapper,
@@ -24,8 +24,7 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey, TContext>
 
     // Internal methods
     private async Task<IReadOnlyCollection<TDestination>> GetPagedListInternal<TDestination>(IMapper mapper,
-        PaginatedRequest paging, Expression<Func<TEntity, bool>>? predicate = null,
-        CancellationToken token = default) =>
+        PaginatedRequest paging, Expression<Func<TEntity, bool>>? predicate, CancellationToken token) =>
         await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
             .WhereIf(predicate)
             .ApplyPaging(paging)

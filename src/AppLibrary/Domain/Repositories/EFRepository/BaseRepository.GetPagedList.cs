@@ -14,7 +14,7 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
     // GetPagedListAsync
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
         PaginatedRequest paging, CancellationToken token = default) =>
-        GetPagedListInternal(paging, predicate, token: token);
+        GetPagedListInternal(paging, predicate, includeProperties: null, token: token);
 
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate,
         PaginatedRequest paging, string[] includeProperties, CancellationToken token = default) =>
@@ -22,16 +22,15 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
 
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging,
         CancellationToken token = default) =>
-        GetPagedListInternal(paging, token: token);
+        GetPagedListInternal(paging, predicate: null, includeProperties: null, token: token);
 
     public Task<IReadOnlyCollection<TEntity>> GetPagedListAsync(PaginatedRequest paging, string[] includeProperties,
         CancellationToken token = default) =>
-        GetPagedListInternal(paging, includeProperties: includeProperties, token: token);
+        GetPagedListInternal(paging, predicate: null, includeProperties: includeProperties, token: token);
 
     // Internal methods
     private async Task<IReadOnlyCollection<TEntity>> GetPagedListInternal(PaginatedRequest paging,
-        Expression<Func<TEntity, bool>>? predicate = null, string[]? includeProperties = null,
-        CancellationToken token = default) =>
+        Expression<Func<TEntity, bool>>? predicate, string[]? includeProperties, CancellationToken token) =>
         await NoTrackingSet(includeProperties)
             .WhereIf(predicate)
             .ApplyPaging(paging)

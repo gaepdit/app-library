@@ -10,14 +10,13 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
 {
     // GetAsync
     public Task<TEntity> GetAsync(TKey id, CancellationToken token = default) =>
-        GetInternal(id, token: token);
+        GetInternal(id, includeProperties: null, token);
 
     public Task<TEntity> GetAsync(TKey id, string[] includeProperties, CancellationToken token = default) =>
         GetInternal(id, includeProperties, token);
 
     // Internal methods
-    private async Task<TEntity> GetInternal(TKey id, string[]? includeProperties = null,
-        CancellationToken token = default) =>
+    private async Task<TEntity> GetInternal(TKey id, string[]? includeProperties, CancellationToken token) =>
         await TrackingSet(includeProperties).SingleOrDefaultAsync(entity => entity.Id.Equals(id), token)
             .ConfigureAwait(false) ?? throw new EntityNotFoundException<TEntity>(id);
 }

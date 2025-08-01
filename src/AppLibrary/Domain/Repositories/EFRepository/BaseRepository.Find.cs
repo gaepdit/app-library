@@ -11,24 +11,23 @@ public abstract partial class BaseRepository<TEntity, TKey, TContext>
 {
     // FindAsync
     public Task<TEntity?> FindAsync(TKey id, CancellationToken token = default) =>
-        FindInternal(id, token: token);
+        FindInternal(id, includeProperties: null, token);
 
     public Task<TEntity?> FindAsync(TKey id, string[] includeProperties, CancellationToken token = default) =>
         FindInternal(id, includeProperties, token);
 
     public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) =>
-        FindInternal(predicate, token: token);
+        FindInternal(predicate, includeProperties: null, token);
 
     public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, string[] includeProperties,
         CancellationToken token = default) =>
         FindInternal(predicate, includeProperties, token);
 
     // Internal methods
-    private Task<TEntity?> FindInternal(TKey id, string[]? includeProperties = null,
-        CancellationToken token = default) =>
+    private Task<TEntity?> FindInternal(TKey id, string[]? includeProperties, CancellationToken token) =>
         FindInternal(entity => entity.Id.Equals(id), includeProperties, token);
 
-    private async Task<TEntity?> FindInternal(Expression<Func<TEntity, bool>> predicate,
-        string[]? includeProperties = null, CancellationToken token = default) =>
+    private async Task<TEntity?> FindInternal(Expression<Func<TEntity, bool>> predicate, string[]? includeProperties,
+        CancellationToken token = default) =>
         await NoTrackingSet(includeProperties).SingleOrDefaultAsync(predicate, token).ConfigureAwait(false);
 }
