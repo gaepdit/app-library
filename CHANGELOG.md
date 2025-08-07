@@ -1,5 +1,22 @@
 # Changelog
 
+## [7.0.0] - 2026-08-07
+
+(All changes since version [6.1.0](#610---2025-06-05))
+
+- Added three new repository interfaces: `IReadRepositoryWithMapping`, `IRepositoryWithMapping`, and
+  `INamedEntityRepositoryWithMapping`. These new repositories inherit the existing repositories and add new methods
+  enabling [query projection using AutoMapper](https://docs.automapper.io/en/stable/Queryable-Extensions.html). The new
+  methods take a destination DTO as a type parameter, enabling Entity Framework to create much more efficient SQL
+  queries.
+- **Breaking change:** No-tracking queries now use identity resolution if that is the default tracking behavior set for
+  the DB context (i.e., `QueryTrackingBehavior.NoTrackingWithIdentityResolution`).
+- **Breaking change:** The `PaginatedRequest` class now requires a non-null, non-empty sorting parameter. (Reliable
+  pagination requires a defined ordering, and the class now enforces that.)
+- **Breaking change:** The `OrderByIf` extension method now returns an `IQueryable` rather than an `IOrderedQueryable`,
+  meaning it cannot be chained with the `ThenBy` method. (The `ordering` parameter already accommodates ordering by
+  multiple columns, e.g., `source.OrderByIf("Name, Id")`.)
+
 ## [6.2.0-beta.2] - 2026-08-01
 
 - **Breaking change:** No-tracking queries now use identity resolution if that is the default tracking behavior set for
@@ -129,7 +146,7 @@
 
 ## [3.1.0] - 2023-04-25
 
-- Added a "SaveChanges" method to the write repository.
+- Added a "SaveChanges" method to the "write" repository.
 
 ## [3.0.0] - 2023-04-25
 
@@ -154,6 +171,10 @@
 ## [1.0.0] - 2022-10-06
 
 _Initial release._
+
+[7.0.0]: https://github.com/gaepdit/app-library/releases/tag/v7.0.0
+
+[6.2.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.2
 
 [6.2.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.1
 
