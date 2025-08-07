@@ -5,7 +5,7 @@ namespace GaEpd.AppLibrary.Domain.Repositories;
 public partial interface IReadRepository<TEntity, in TKey>
 {
     /// <summary>
-    /// Returns the count of <see cref="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
+    /// Returns the count of <typeparamref name="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
     /// Returns zero if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>

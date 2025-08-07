@@ -6,7 +6,7 @@ namespace GaEpd.AppLibrary.Domain.Repositories;
 public partial interface IReadRepositoryWithMapping<TEntity, in TKey>
 {
     /// <summary>
-    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of all <see cref="TEntity"/> records.
+    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of all <typeparamref name="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>
@@ -17,7 +17,7 @@ public partial interface IReadRepositoryWithMapping<TEntity, in TKey>
         CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of all <see cref="TEntity"/> records.
+    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of all <typeparamref name="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>
@@ -30,7 +30,7 @@ public partial interface IReadRepositoryWithMapping<TEntity, in TKey>
 
     /// <summary>
     /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of all
-    /// <see cref="TEntity"/> records matching the conditions of the <paramref name="predicate"/>.
+    /// <typeparamref name="TEntity"/> records matching the conditions of the <paramref name="predicate"/>.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>
@@ -43,7 +43,7 @@ public partial interface IReadRepositoryWithMapping<TEntity, in TKey>
 
     /// <summary>
     /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of all
-    /// <see cref="TEntity"/> records matching the conditions of the <paramref name="predicate"/>.
+    /// <typeparamref name="TEntity"/> records matching the conditions of the <paramref name="predicate"/>.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>

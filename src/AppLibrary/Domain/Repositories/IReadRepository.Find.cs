@@ -5,7 +5,7 @@ namespace GaEpd.AppLibrary.Domain.Repositories;
 public partial interface IReadRepository<TEntity, in TKey>
 {
     /// <summary>
-    /// Returns the <see cref="TEntity"/> matching the given <paramref name="id"/>.
+    /// Returns the <typeparamref name="TEntity"/> matching the given <paramref name="id"/>.
     /// Returns null if there are no matches.
     /// </summary>
     /// <param name="id">The ID of the entity.</param>
@@ -15,7 +15,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<TEntity?> FindAsync(TKey id, CancellationToken token = default);
 
     /// <summary>
-    /// Returns the <see cref="TEntity"/> matching the given <paramref name="id"/>.
+    /// Returns the <typeparamref name="TEntity"/> matching the given <paramref name="id"/>.
     /// Returns null if there are no matches.
     /// </summary>
     /// <param name="id">The ID of the entity.</param>
@@ -26,7 +26,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<TEntity?> FindAsync(TKey id, string[] includeProperties, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a single <see cref="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
+    /// Returns a single <typeparamref name="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
     /// Returns null if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>
@@ -36,7 +36,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a single <see cref="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
+    /// Returns a single <typeparamref name="TEntity"/> matching the conditions of the <paramref name="predicate"/>.
     /// Returns null if there are no matches.
     /// </summary>
     /// <param name="predicate">The search conditions.</param>

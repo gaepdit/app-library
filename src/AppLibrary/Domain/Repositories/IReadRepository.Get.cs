@@ -3,7 +3,7 @@ namespace GaEpd.AppLibrary.Domain.Repositories;
 public partial interface IReadRepository<TEntity, in TKey>
 {
     /// <summary>
-    /// Returns the <see cref="TEntity"/> with the given <paramref name="id"/>.
+    /// Returns the <typeparamref name="TEntity"/> with the given <paramref name="id"/>.
     /// </summary>
     /// <param name="id">The ID of the entity.</param>
     /// <param name="token"><see cref="T:System.Threading.CancellationToken"/></param>
@@ -12,7 +12,7 @@ public partial interface IReadRepository<TEntity, in TKey>
     Task<TEntity> GetAsync(TKey id, CancellationToken token = default);
 
     /// <summary>
-    /// Returns the <see cref="TEntity"/> with the given <paramref name="id"/>.
+    /// Returns the <typeparamref name="TEntity"/> with the given <paramref name="id"/>.
     /// </summary>
     /// <param name="id">The ID of the entity.</param>
     /// <param name="includeProperties">Navigation properties to include (when using an Entity Framework repository).</param>

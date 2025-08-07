@@ -14,7 +14,7 @@ public interface INamedEntityRepositoryWithMapping<TEntity>
     where TEntity : IEntity, INamedEntity
 {
     /// <summary>
-    /// Returns the <typeparamref name="TDestination"/> projection of the <see cref="TEntity"/> with the given
+    /// Returns the <typeparamref name="TDestination"/> projection of the <typeparamref name="TEntity"/> with the given
     /// <paramref name="name"/>.
     /// Returns null if the name does not exist.
     /// </summary>
@@ -26,8 +26,8 @@ public interface INamedEntityRepositoryWithMapping<TEntity>
     Task<TDestination?> FindByNameAsync<TDestination>(string name, IMapper mapper, CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of <see cref="TEntity"/>
-    /// ordered by <see cref="INamedEntity.Name"/>.
+    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of
+    /// <typeparamref name="TEntity"/> ordered by <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if no entities exist.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>
@@ -38,8 +38,9 @@ public interface INamedEntityRepositoryWithMapping<TEntity>
         CancellationToken token = default);
 
     /// <summary>
-    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of <see cref="TEntity"/>
-    /// matching the conditions of the <paramref name="predicate"/> and ordered by <see cref="INamedEntity.Name"/>.
+    /// Returns a read-only collection of the <typeparamref name="TDestination"/> projection of
+    /// <typeparamref name="TEntity"/> matching the conditions of the <paramref name="predicate"/> and ordered by
+    /// <see cref="INamedEntity.Name"/>.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>

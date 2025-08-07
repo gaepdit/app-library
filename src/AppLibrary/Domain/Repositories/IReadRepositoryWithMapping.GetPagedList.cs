@@ -8,7 +8,7 @@ public partial interface IReadRepositoryWithMapping<TEntity, in TKey>
 {
     /// <summary>
     /// Returns a paginated read-only collection of the <typeparamref name="TDestination"/> projection of all
-    /// <see cref="TEntity"/> records.
+    /// <typeparamref name="TEntity"/> records.
     /// Returns an empty collection if there are no matches.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>
@@ -21,7 +21,7 @@ public partial interface IReadRepositoryWithMapping<TEntity, in TKey>
 
     /// <summary>
     /// Returns a paginated read-only collection of the <typeparamref name="TDestination"/> projection of all
-    /// <see cref="TEntity"/> records matching the conditions of the <paramref name="predicate"/>.
+    /// <typeparamref name="TEntity"/> records matching the conditions of the <paramref name="predicate"/>.
     /// </summary>
     /// <typeparam name="TDestination">The destination type.</typeparam>
     /// <param name="predicate">The search conditions.</param>
