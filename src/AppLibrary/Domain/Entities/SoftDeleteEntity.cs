@@ -30,7 +30,7 @@ public abstract class SoftDeleteEntity<TKey, TUserKey> : Entity<TKey>, ISoftDele
 }
 
 /// <summary>
-/// An implementation of <see cref="IEntity{TKey}"/> that also implements <see cref="ISoftDelete{TUserKey}"/>
+/// An implementation of <see cref="IEntity{TKey}"/> that also implements <see cref="ISoftDelete{TUserKey}"/>.
 /// A <see cref="string"/> is used for the User primary key.
 /// </summary>
 /// <typeparam name="TKey">The type of the primary key.</typeparam>
