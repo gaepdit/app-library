@@ -28,10 +28,37 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey, TContext>
         string ordering, IMapper mapper, CancellationToken token = default) =>
         GetListInternal<TDestination>(mapper, predicate, ordering, token);
 
+    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination, TSource>(IMapper mapper,
+        CancellationToken token = default) where TSource : TEntity =>
+        GetListInternal<TDestination, TSource>(mapper, predicate: null, ordering: null, token);
+
+    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination, TSource>(string ordering, IMapper mapper,
+        CancellationToken token = default) where TSource : TEntity =>
+        GetListInternal<TDestination, TSource>(mapper, predicate: null, ordering, token);
+
+    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination, TSource>(
+        Expression<Func<TSource, bool>> predicate, IMapper mapper, CancellationToken token = default)
+        where TSource : TEntity =>
+        GetListInternal<TDestination, TSource>(mapper, predicate, ordering: null, token);
+
+    public Task<IReadOnlyCollection<TDestination>> GetListAsync<TDestination, TSource>(
+        Expression<Func<TSource, bool>> predicate, string ordering, IMapper mapper,
+        CancellationToken token = default) where TSource : TEntity =>
+        GetListInternal<TDestination, TSource>(mapper, predicate, ordering, token);
+
     // Internal methods
     private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
         Expression<Func<TEntity, bool>>? predicate, string? ordering, CancellationToken token) =>
         await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
+            .WhereIf(predicate)
+            .OrderByIf(ordering)
+        ).ToListAsync(token).ConfigureAwait(false);
+
+    private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination, TSource>(IMapper mapper,
+        Expression<Func<TSource, bool>>? predicate, string? ordering, CancellationToken token)
+        where TSource : TEntity =>
+        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
+            .OfType<TSource>()
             .WhereIf(predicate)
             .OrderByIf(ordering)
         ).ToListAsync(token).ConfigureAwait(false);
