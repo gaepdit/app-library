@@ -10,17 +10,13 @@ public class TestEntity : IEntity
     [StringLength(7)] public string Note { get; init; } = string.Empty;
 }
 
-public class EntityWithNavigationProperty : IEntity
+public class EntityWithNavigationProperty : TestEntity
 {
-    public Guid Id { get; init; }
-    [StringLength(7)] public string Note { get; init; } = null!;
     public List<TextRecord> TextRecords { get; } = [];
 }
 
-public class EntityWithChildProperty : IEntity
+public class EntityWithChildProperty : TestEntity
 {
-    public Guid Id { get; init; }
-    [StringLength(7)] public string Note { get; init; } = string.Empty;
     public TextRecord TextRecord { get; init; } = null!;
 }
 
