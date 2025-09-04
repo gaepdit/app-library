@@ -1,6 +1,6 @@
 ﻿using AppLibrary.Tests.RepositoryTestHelpers;
 
-namespace AppLibrary.Tests.EfRepositoryTests.ProjectToTests;
+namespace AppLibrary.Tests.EfRepositoryTests.ProjectDerivedEntityTests;
 
 public class GetListAndProject : TestsBase
 {
@@ -8,12 +8,15 @@ public class GetListAndProject : TestsBase
     public async Task GetList_ReturnsAllAsDto()
     {
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(Mapper!);
+        var result = await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        result.Should().BeEquivalentTo(TestData, options => options.Excluding(e => e.TextRecord));
+        result.Should().BeEquivalentTo(TestData.OfType<EntityWithChildProperty>(),
+            options => options.Excluding(e => e.TextRecord));
+        result.Select(e => e.TextRecordText).Should()
+            .BeEquivalentTo(TestData.OfType<EntityWithChildProperty>().Select(e => e.TextRecord.Text));
     }
 
     [Test]
@@ -23,7 +26,7 @@ public class GetListAndProject : TestsBase
         await Helper.ClearTableAsync<EntityWithChildProperty>();
 
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(Mapper!);
+        var result = await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(Mapper!);
 
         // Assert
         result.Should().BeEmpty();
@@ -33,10 +36,12 @@ public class GetListAndProject : TestsBase
     public async Task GetList_UsingPredicate_ReturnsCorrectEntities()
     {
         // Arrange
-        var item = TestData[0];
+        var item = TestData.OfType<EntityWithChildProperty>().First();
 
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(entity => entity.Id == item.Id, Mapper!);
+        var result =
+            await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(
+                entity => entity.Id == item.Id, Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
@@ -51,7 +56,9 @@ public class GetListAndProject : TestsBase
         var id = Guid.NewGuid();
 
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(entity => entity.Id == id, Mapper!);
+        var result =
+            await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(
+                entity => entity.Id == id, Mapper!);
 
         // Assert
         result.Should().BeEmpty();
