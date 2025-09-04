@@ -18,9 +18,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<NamedEntityWithChildProperty> NamedEntitiesWithChildProperty => Set<NamedEntityWithChildProperty>();
     public DbSet<EntityWithNavigationProperty> EntitiesWithNavigationProperty => Set<EntityWithNavigationProperty>();
     public DbSet<EntityWithChildProperty> EntitiesWithChildProperty => Set<EntityWithChildProperty>();
-
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-    //     optionsBuilder.LogTo(Console.WriteLine);
 }
 
 public sealed class EfRepositoryTestHelper : IDisposable, IAsyncDisposable
