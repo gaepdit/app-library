@@ -1,6 +1,13 @@
 # Changelog
 
-## [7.0.0] - 2026-08-07
+## [7.1.0-beta.1] - 2025-09-04
+
+- Added new overloads to the `GetListAsync` methods in `IReadRepositoryWithMapping`. These overloads take two type
+  parameters and allow for projecting to a destination DTO from a source entity which is itself a child derived from the
+  base repository entity. I.e., `GetListAsync<TDestination, TSource>(...) where TSource : TEntity;` If your entities use
+  inheritance, this greatly simplifies mapping query results
+
+## [7.0.0] - 2025-08-07
 
 (All changes since version [6.1.0](#610---2025-06-05))
 
@@ -17,7 +24,7 @@
   meaning it cannot be chained with the `ThenBy` method. (The `ordering` parameter already accommodates ordering by
   multiple columns, e.g., `source.OrderByIf("Name, Id")`.)
 
-## [6.2.0-beta.2] - 2026-08-01
+## [6.2.0-beta.2] - 2025-08-01
 
 - **Breaking change:** No-tracking queries now use identity resolution if that is the default tracking behavior set for
   the DB context (i.e., `QueryTrackingBehavior.NoTrackingWithIdentityResolution`).
@@ -25,7 +32,7 @@
   repositories, allowing client applications to opt in if desired. The new repositories use the "WithMapping" suffix,
   e.g., `IReadRepositoryWithMapping`.
 
-## [6.2.0-beta.1] - 2026-07-28
+## [6.2.0-beta.1] - 2025-07-28
 
 - Added overloads to the `Find`, `GetList`, and `GetPagedList` repository methods to enable [query projection using
   AutoMapper](https://docs.automapper.io/en/stable/Queryable-Extensions.html). The new overloads take a destination DTO
@@ -172,60 +179,62 @@
 
 _Initial release._
 
-[7.0.0]: https://github.com/gaepdit/app-library/releases/tag/v7.0.0
-
-[6.2.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.2
-
-[6.2.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.1
-
-[6.1.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
-
-[6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.0.0
-
-[5.6.1]: https://github.com/gaepdit/app-library/releases/tag/v5.6.1
-
-[5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
-
-[5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
-
-[5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
-
-[5.3.1]: https://github.com/gaepdit/app-library/releases/tag/v5.3.1
-
-[5.3.0]: https://github.com/gaepdit/app-library/releases/tag/v5.3.0
-
-[5.2.1]: https://github.com/gaepdit/app-library/releases/tag/v5.2.1
-
-[5.2.0]: https://github.com/gaepdit/app-library/releases/tag/v5.2.0
-
-[5.1.0]: https://github.com/gaepdit/app-library/releases/tag/l%2Fv5.1.0
-
-[5.0.1]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.1
-
-[5.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.0
-
-[4.1.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.1.0
-
-[4.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.0.0
-
-[3.5.1]: https://github.com/gaepdit/app-library/releases/tag/v3.5.1
-
-[3.5.0]: https://github.com/gaepdit/app-library/releases/tag/v3.5.0
-
-[3.4.0]: https://github.com/gaepdit/app-library/releases/tag/v3.4.0
-
-[3.3.0]: https://github.com/gaepdit/app-library/releases/tag/v3.3.0
-
-[3.2.0]: https://github.com/gaepdit/app-library/releases/tag/v3.2.0
-
-[3.1.0]: https://github.com/gaepdit/app-library/releases/tag/v3.1.0
-
-[3.0.0]: https://github.com/gaepdit/app-library/releases/tag/v3.0.0
-
-[2.0.0]: https://github.com/gaepdit/app-library/releases/tag/v2.0.0
-
-[1.1.0]: https://github.com/gaepdit/app-library/releases/tag/v1.1.0
+[1.0.0]: https://github.com/gaepdit/app-library/releases/tag/v1.0.0
 
 [1.0.1]: https://github.com/gaepdit/app-library/releases/tag/v1.0.1
 
-[1.0.0]: https://github.com/gaepdit/app-library/releases/tag/v1.0.0
+[1.1.0]: https://github.com/gaepdit/app-library/releases/tag/v1.1.0
+
+[2.0.0]: https://github.com/gaepdit/app-library/releases/tag/v2.0.0
+
+[3.0.0]: https://github.com/gaepdit/app-library/releases/tag/v3.0.0
+
+[3.1.0]: https://github.com/gaepdit/app-library/releases/tag/v3.1.0
+
+[3.2.0]: https://github.com/gaepdit/app-library/releases/tag/v3.2.0
+
+[3.3.0]: https://github.com/gaepdit/app-library/releases/tag/v3.3.0
+
+[3.4.0]: https://github.com/gaepdit/app-library/releases/tag/v3.4.0
+
+[3.5.0]: https://github.com/gaepdit/app-library/releases/tag/v3.5.0
+
+[3.5.1]: https://github.com/gaepdit/app-library/releases/tag/v3.5.1
+
+[4.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.0.0
+
+[4.1.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.1.0
+
+[5.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.0
+
+[5.0.1]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.1
+
+[5.1.0]: https://github.com/gaepdit/app-library/releases/tag/l%2Fv5.1.0
+
+[5.2.0]: https://github.com/gaepdit/app-library/releases/tag/v5.2.0
+
+[5.2.1]: https://github.com/gaepdit/app-library/releases/tag/v5.2.1
+
+[5.3.0]: https://github.com/gaepdit/app-library/releases/tag/v5.3.0
+
+[5.3.1]: https://github.com/gaepdit/app-library/releases/tag/v5.3.1
+
+[5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
+
+[5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
+
+[5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
+
+[5.6.1]: https://github.com/gaepdit/app-library/releases/tag/v5.6.1
+
+[6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.0.0
+
+[6.1.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
+
+[6.2.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.1
+
+[6.2.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.2
+
+[7.0.0]: https://github.com/gaepdit/app-library/releases/tag/v7.0.0
+
+[7.1.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.1

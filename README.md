@@ -121,19 +121,18 @@ or both of these implementations.
 Example usage:
 
 ```csharp
+// Define the repository interface.
 public interface IMyRepository : INamedEntityRepository<MyEntity> { }
 
+// Implement a version of the repository that uses in-memory data.
 public sealed class MyInMemoryRepository 
     : LocalRepository.NamedEntityRepository<MyEntity>(MyEntitySeedData), IMyRepository;
 
+// Implement another version that uses an Entity Framework database.
 public sealed class MyEfRepository(AppDbContext context)
     : EFRepository.NamedEntityRepository<MyEntity, AppDbContext>(context), IMyRepository;
-```
 
-Then you can use the desired implementation based on the app environment, for example:
-
-```csharp
-
+// Using dependency injection, choose which implementation to use based on the app environment, for example.
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSingleton<IMyRepository, MyInMemoryRepository>();    
