@@ -35,7 +35,7 @@ jobs:
       - name: NuGet Push
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: dotnet nuget push .artifacts/AppLibrary/bin/Release/*.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push .artifacts/AppLibrary/bin/Release/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Create GitHub Release
         uses: anton-yurchenko/git-release@ec9c5b5c36b27eaffc628785b9183eae54601200
