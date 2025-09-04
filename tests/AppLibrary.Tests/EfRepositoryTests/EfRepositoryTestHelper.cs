@@ -2,6 +2,7 @@
 using AppLibrary.Tests.EfRepositoryTests.IncludePropertiesTests;
 using AppLibrary.Tests.EfRepositoryTests.NamedEntityProjectToTests;
 using AppLibrary.Tests.EfRepositoryTests.NamedEntityTests;
+using AppLibrary.Tests.EfRepositoryTests.ProjectDerivedEntityTests;
 using AppLibrary.Tests.EfRepositoryTests.ProjectToTests;
 using AppLibrary.Tests.RepositoryTestHelpers;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<NamedEntityWithChildProperty> NamedEntitiesWithChildProperty => Set<NamedEntityWithChildProperty>();
     public DbSet<EntityWithNavigationProperty> EntitiesWithNavigationProperty => Set<EntityWithNavigationProperty>();
     public DbSet<EntityWithChildProperty> EntitiesWithChildProperty => Set<EntityWithChildProperty>();
+
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+    //     optionsBuilder.LogTo(Console.WriteLine);
 }
 
 public sealed class EfRepositoryTestHelper : IDisposable, IAsyncDisposable
@@ -128,6 +132,18 @@ public sealed class EfRepositoryTestHelper : IDisposable, IAsyncDisposable
 
         Context = new AppDbContext(_options);
         return new ProjectToRepository(Context);
+    }
+
+    public ProjectDerivedEntityRepository GetProjectDerivedEntityRepository(List<TestEntity> testData)
+    {
+        if (!_context.EntitiesWithChildProperty.Any())
+        {
+            _context.TestEntities.AddRange(testData);
+            _context.SaveChanges();
+        }
+
+        Context = new AppDbContext(_options);
+        return new ProjectDerivedEntityRepository(Context);
     }
 
     public void Dispose()

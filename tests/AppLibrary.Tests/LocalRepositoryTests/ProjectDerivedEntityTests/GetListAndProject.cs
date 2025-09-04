@@ -1,6 +1,6 @@
 ﻿using AppLibrary.Tests.RepositoryTestHelpers;
 
-namespace AppLibrary.Tests.LocalRepositoryTests.ProjectToTests;
+namespace AppLibrary.Tests.LocalRepositoryTests.ProjectDerivedEntityTests;
 
 public class GetListAndProject : TestsBase
 {
@@ -8,12 +8,12 @@ public class GetListAndProject : TestsBase
     public async Task GetList_ReturnsAllAsDto()
     {
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(Mapper!);
+        var result = await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        result.Should().BeEquivalentTo(TestData, options => options.Excluding(e => e.TextRecord));
+        result.Should().BeEquivalentTo(TestData.Where(e => e is EntityWithChildProperty));
     }
 
     [Test]
@@ -23,7 +23,7 @@ public class GetListAndProject : TestsBase
         Repository.Items.Clear();
 
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(Mapper!);
+        var result = await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(Mapper!);
 
         // Assert
         result.Should().BeEmpty();
@@ -33,15 +33,14 @@ public class GetListAndProject : TestsBase
     public async Task GetList_UsingPredicate_ReturnsCorrectEntitiesAsDto()
     {
         // Arrange
-        var item = TestData[0];
+        var item = TestData.First(e => e is EntityWithChildProperty);
 
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(entity => entity.Id == item.Id, Mapper!);
+        var result =
+            await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(entity => entity.Id == item.Id, Mapper!);
 
         // Assert
-        using var scope = new AssertionScope();
-        result.Single().Should().BeEquivalentTo(item, options => options.Excluding(e => e.TextRecord));
-        result.Single().TextRecordText.Should().Be(item.TextRecord.Text);
+        result.Single().Should().BeEquivalentTo(item);
     }
 
     [Test]
@@ -51,7 +50,8 @@ public class GetListAndProject : TestsBase
         var id = Guid.NewGuid();
 
         // Act
-        var result = await Repository.GetListAsync<EntityDto>(entity => entity.Id == id, Mapper!);
+        var result =
+            await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(entity => entity.Id == id, Mapper!);
 
         // Assert
         result.Should().BeEmpty();
