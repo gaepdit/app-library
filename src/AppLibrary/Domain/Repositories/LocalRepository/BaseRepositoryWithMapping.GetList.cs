@@ -47,14 +47,14 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey>
     // Internal methods
     private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination>(IMapper mapper,
         Expression<Func<TEntity, bool>>? predicate, string? ordering) =>
-        await Task.FromResult(mapper.Map<IReadOnlyCollection<TDestination>>(Items
+        await Task.FromResult(mapper.Map<IReadOnlyCollection<TDestination>>(source: Items
             .WhereIf(predicate)
             .OrderByIf(ordering)
             .ToList())).ConfigureAwait(false);
 
     private async Task<IReadOnlyCollection<TDestination>> GetListInternal<TDestination, TSource>(IMapper mapper,
         Expression<Func<TSource, bool>>? predicate, string? ordering) where TSource : TEntity =>
-        await Task.FromResult(mapper.Map<IReadOnlyCollection<TDestination>>(Items
+        await Task.FromResult(mapper.Map<IReadOnlyCollection<TDestination>>(source: Items
             .OfType<TSource>()
             .WhereIf(predicate)
             .OrderByIf(ordering)

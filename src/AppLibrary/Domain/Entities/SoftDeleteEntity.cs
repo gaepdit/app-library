@@ -24,7 +24,7 @@ public abstract class SoftDeleteEntity<TKey, TUserKey> : Entity<TKey>, ISoftDele
     public void SetNotDeleted()
     {
         IsDeleted = false;
-        DeletedAt = default;
+        DeletedAt = null;
         DeletedById = default;
     }
 }

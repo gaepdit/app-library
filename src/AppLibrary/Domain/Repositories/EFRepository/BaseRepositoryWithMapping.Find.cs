@@ -19,4 +19,15 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey, TContext>
         await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
             .Where(predicate)
         ).SingleOrDefaultAsync(token).ConfigureAwait(false);
+
+    public Task<TDestination?> FindAsync<TDestination, TSource>(TKey id, IMapper mapper,
+        CancellationToken token = default) where TSource : TEntity =>
+        FindAsync<TDestination, TSource>(source => source.Id.Equals(id), mapper, token);
+
+    public async Task<TDestination?> FindAsync<TDestination, TSource>(Expression<Func<TSource, bool>> predicate,
+        IMapper mapper, CancellationToken token = default) where TSource : TEntity =>
+        await mapper.ProjectTo<TDestination>(source: NoTrackingSet()
+            .OfType<TSource>()
+            .Where(predicate)
+        ).SingleOrDefaultAsync(token).ConfigureAwait(false);
 }
