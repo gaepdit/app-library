@@ -1,4 +1,5 @@
-﻿using GaEpd.AppLibrary.Pagination;
+﻿using AppLibrary.Tests.RepositoryTestHelpers;
+using GaEpd.AppLibrary.Pagination;
 
 namespace AppLibrary.Tests.EfRepositoryTests.IncludePropertiesTests;
 
@@ -8,7 +9,7 @@ public class GetPagedListIncludeProperties : TestsBase
     public async Task GetPagedList_WithNoIncludedProperties_ReturnsWithoutProperties()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 10, "Id");
+        var paging = new PaginatedRequest(1, 10, nameof(EntityWithNavigationProperty.Id));
 
         // Act
         var results = await Repository.GetPagedListAsync(paging, includeProperties: []);
@@ -21,7 +22,7 @@ public class GetPagedListIncludeProperties : TestsBase
     public async Task GetPagedList_WithIncludedProperties_ReturnsWithProperties()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 10, "Id");
+        var paging = new PaginatedRequest(1, 10, nameof(EntityWithNavigationProperty.Id));
 
         // Act
         var results = await Repository.GetPagedListAsync(paging, includeProperties: [TextRecordsName]);
@@ -34,7 +35,7 @@ public class GetPagedListIncludeProperties : TestsBase
     public async Task GetPagedList_WithPredicate_WithNoIncludedProperties_ReturnsWithoutProperties()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 10, "Id");
+        var paging = new PaginatedRequest(1, 10, nameof(EntityWithNavigationProperty.Id));
 
         // Act
         var results =
@@ -48,7 +49,7 @@ public class GetPagedListIncludeProperties : TestsBase
     public async Task GetPagedList_WithPredicate_WithIncludedProperties_ReturnsWithProperties()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 10, "Id");
+        var paging = new PaginatedRequest(1, 10, nameof(EntityWithNavigationProperty.Id));
 
         // Act
         var results = await Repository.GetPagedListAsync(e => e.Note == TestData[0].Note, paging,

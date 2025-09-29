@@ -14,7 +14,7 @@ public abstract class TestsBase
 
     protected const string UsefulSuffix = "def";
 
-    public static readonly List<TestNamedEntity> TestData =
+    private static readonly List<TestNamedEntity> TestData =
     [
         new(id: Guid.NewGuid(), name: "Abc abc"),
         new(id: Guid.NewGuid(), name: $"Xyx {UsefulSuffix}"),

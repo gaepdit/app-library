@@ -7,21 +7,21 @@ public class GetListWithOrdering : TestsBase
     [Test]
     public async Task GetListAsc_ReturnsAllEntitiesInAscendingOrder()
     {
-        var items = Repository.Context.Set<TestEntity>().OrderBy(entity => entity.Note);
+        var expected = Repository.Context.Set<TestEntity>().OrderBy(entity => entity.Note);
 
-        var result = await Repository.GetListAsync(ordering: "Note");
+        var result = await Repository.GetListAsync(ordering: nameof(TestEntity.Note));
 
-        result.Should().BeEquivalentTo(items, options => options.WithStrictOrdering());
+        result.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
     }
 
     [Test]
     public async Task GetListDesc_ReturnsAllEntitiesInDescendingOrder()
     {
-        var items = Repository.Context.Set<TestEntity>().OrderByDescending(entity => entity.Note);
+        var expected = Repository.Context.Set<TestEntity>().OrderByDescending(entity => entity.Note);
 
-        var result = await Repository.GetListAsync(ordering: "Note desc");
+        var result = await Repository.GetListAsync(ordering: $"{nameof(TestEntity.Note)} desc");
 
-        result.Should().BeEquivalentTo(items, options => options.WithStrictOrdering());
+        result.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
     }
 
     [Test]
@@ -29,7 +29,7 @@ public class GetListWithOrdering : TestsBase
     {
         await Helper.ClearTableAsync<TestEntity>();
 
-        var result = await Repository.GetListAsync(ordering: "Note");
+        var result = await Repository.GetListAsync(ordering: nameof(TestEntity.Note));
 
         result.Should().BeEmpty();
     }
@@ -41,7 +41,7 @@ public class GetListWithOrdering : TestsBase
         var expected = Repository.Context.Set<TestEntity>().Where(entity => entity.Id != skipId)
             .OrderBy(entity => entity.Note);
 
-        var result = await Repository.GetListAsync(entity => entity.Id != skipId, ordering: "Note");
+        var result = await Repository.GetListAsync(entity => entity.Id != skipId, ordering: nameof(TestEntity.Note));
 
         result.Should().BeEquivalentTo(expected);
     }
@@ -53,7 +53,8 @@ public class GetListWithOrdering : TestsBase
         var expected = Repository.Context.Set<TestEntity>().Where(entity => entity.Id != skipId)
             .OrderByDescending(entity => entity.Note);
 
-        var result = await Repository.GetListAsync(entity => entity.Id != skipId, ordering: "Note desc");
+        var result =
+            await Repository.GetListAsync(entity => entity.Id != skipId, ordering: $"{nameof(TestEntity.Note)} desc");
 
         result.Should().BeEquivalentTo(expected);
     }
@@ -63,7 +64,7 @@ public class GetListWithOrdering : TestsBase
     {
         var id = Guid.NewGuid();
 
-        var result = await Repository.GetListAsync(entity => entity.Id == id, ordering: "Note");
+        var result = await Repository.GetListAsync(entity => entity.Id == id, ordering: nameof(TestEntity.Note));
 
         result.Should().BeEmpty();
     }

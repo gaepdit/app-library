@@ -7,11 +7,11 @@ public class GetList : TestsBase
     [Test]
     public async Task GetList_ReturnsAllEntities()
     {
-        var items = Repository.Context.Set<TestEntity>();
+        var expected = Repository.Context.Set<TestEntity>();
 
         var result = await Repository.GetListAsync();
 
-        result.Should().BeEquivalentTo(items);
+        result.Should().BeEquivalentTo(expected);
     }
 
     [Test]
