@@ -1,5 +1,10 @@
 # Changelog
 
+## [7.1.0-beta.2] - 2025-09-29
+
+- Added new overloads to the `FindAsync` and `GetPagedListAsync` methods in `IReadRepositoryWithMapping` similar to the
+  `GetListAsync` methods from the previous beta release.
+
 ## [7.1.0-beta.1] - 2025-09-04
 
 - Added new overloads to the `GetListAsync` methods in `IReadRepositoryWithMapping`. These overloads take two type
@@ -238,3 +243,5 @@ _Initial release._
 [7.0.0]: https://github.com/gaepdit/app-library/releases/tag/v7.0.0
 
 [7.1.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.1
+
+[7.1.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.2
