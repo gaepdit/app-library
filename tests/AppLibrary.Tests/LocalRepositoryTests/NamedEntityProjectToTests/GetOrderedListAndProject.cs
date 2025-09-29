@@ -16,12 +16,7 @@ public class GetOrderedListAndProject : TestsBase
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<NamedEntityWithChildPropertyDto>();
-        var results = result.ToList();
-        for (var i = 0; i < expected.Count; i++)
-        {
-            results[i].Id.Should().Be(expected[i].Id);
-            results[i].TextRecordText.Should().Be(expected[i].TextRecord!.Text);
-        }
+        result.Should().BeEquivalentTo(Mapper!.Map<List<NamedEntityWithChildPropertyDto>>(expected));
     }
 
     [Test]
@@ -50,12 +45,7 @@ public class GetOrderedListAndProject : TestsBase
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<NamedEntityWithChildPropertyDto>();
-        var results = result.ToList();
-        for (var i = 0; i < expected.Count; i++)
-        {
-            results[i].Id.Should().Be(expected[i].Id);
-            results[i].TextRecordText.Should().Be(expected[i].TextRecord!.Text);
-        }
+        result.Should().BeEquivalentTo(Mapper!.Map<List<NamedEntityWithChildPropertyDto>>(expected));
     }
 
     [Test]

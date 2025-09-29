@@ -7,13 +7,16 @@ public class GetListAndProject : TestsBase
     [Test]
     public async Task GetList_ReturnsAllAsDto()
     {
+        // Arrange
+        var expected = TestData.Where(e => e is EntityWithChildProperty);
+
         // Act
         var result = await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        result.Should().BeEquivalentTo(TestData.Where(e => e is EntityWithChildProperty));
+        result.Should().BeEquivalentTo(expected);
     }
 
     [Test]
@@ -33,14 +36,15 @@ public class GetListAndProject : TestsBase
     public async Task GetList_UsingPredicate_ReturnsCorrectEntitiesAsDto()
     {
         // Arrange
-        var item = TestData.First(e => e is EntityWithChildProperty);
+        var expected = TestData.First(e => e is EntityWithChildProperty);
 
         // Act
         var result =
-            await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(entity => entity.Id == item.Id, Mapper!);
+            await Repository.GetListAsync<EntityDto, EntityWithChildProperty>(entity => entity.Id == expected.Id,
+                Mapper!);
 
         // Assert
-        result.Single().Should().BeEquivalentTo(item);
+        result.Single().Should().BeEquivalentTo(expected);
     }
 
     [Test]

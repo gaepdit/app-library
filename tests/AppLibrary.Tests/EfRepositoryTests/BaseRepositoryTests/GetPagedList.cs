@@ -9,7 +9,7 @@ public class GetPagedList : TestsBase
     public async Task GetPagedList_ReturnsCorrectPagedResults()
     {
         // Arrange
-        var paging = new PaginatedRequest(2, 1, "Id");
+        var paging = new PaginatedRequest(2, 1, nameof(TestEntity.Id));
         var expectedResults = Repository.Context.Set<TestEntity>().OrderBy(e => e.Id).Skip(paging.Skip)
             .Take(paging.Take).ToList();
 
@@ -24,7 +24,7 @@ public class GetPagedList : TestsBase
     public async Task GetPagedList_WithPredicate_ReturnsCorrectPagedResults()
     {
         // Arrange
-        var paging = new PaginatedRequest(1, 1, "Id");
+        var paging = new PaginatedRequest(1, 1, nameof(TestEntity.Id));
 
         // Assuming this is the correct selection based on your predicate.
         var selectedItems = Repository.Context.Set<TestEntity>().OrderBy(e => e.Id).Skip(1).ToList();
@@ -42,7 +42,7 @@ public class GetPagedList : TestsBase
     {
         // Arrange
         await Helper.ClearTableAsync<TestEntity>();
-        var paging = new PaginatedRequest(1, 1, "Id");
+        var paging = new PaginatedRequest(1, 1, nameof(TestEntity.Id));
 
         // Act
         var result = await Repository.GetPagedListAsync(paging);
@@ -56,7 +56,7 @@ public class GetPagedList : TestsBase
     {
         // Arrange
         var items = Repository.Context.Set<TestEntity>();
-        var paging = new PaginatedRequest(2, items.Count(), "Id");
+        var paging = new PaginatedRequest(2, items.Count(), nameof(TestEntity.Id));
 
         // Act
         var result = await Repository.GetPagedListAsync(paging);
@@ -69,27 +69,27 @@ public class GetPagedList : TestsBase
     public async Task GivenAscSorting_ReturnsAscSortedList()
     {
         // Arrange
-        var items = Repository.Context.Set<TestEntity>().OrderBy(entity => entity.Note).ToList();
-        var paging = new PaginatedRequest(1, items.Count, "Note");
+        var expected = Repository.Context.Set<TestEntity>().OrderBy(entity => entity.Note).ToList();
+        var paging = new PaginatedRequest(1, expected.Count, nameof(TestEntity.Note));
 
         // Act
         var result = await Repository.GetPagedListAsync(paging);
 
         // Assert
-        result.Should().BeEquivalentTo(items, options => options.WithStrictOrdering());
+        result.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
     }
 
     [Test]
     public async Task GivenDescSorting_ReturnsDescSortedList()
     {
         // Arrange
-        var items = Repository.Context.Set<TestEntity>().OrderByDescending(entity => entity.Note).ToList();
-        var paging = new PaginatedRequest(1, items.Count, "Note desc");
+        var expected = Repository.Context.Set<TestEntity>().OrderByDescending(entity => entity.Note).ToList();
+        var paging = new PaginatedRequest(1, expected.Count, $"{nameof(TestEntity.Note)} desc");
 
         // Act
         var result = await Repository.GetPagedListAsync(paging);
 
         // Assert
-        result.Should().BeEquivalentTo(items, options => options.WithStrictOrdering());
+        result.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
     }
 }

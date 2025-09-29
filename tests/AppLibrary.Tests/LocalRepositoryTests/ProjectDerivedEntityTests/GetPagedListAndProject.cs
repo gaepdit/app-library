@@ -1,7 +1,7 @@
 ﻿using AppLibrary.Tests.RepositoryTestHelpers;
 using GaEpd.AppLibrary.Pagination;
 
-namespace AppLibrary.Tests.LocalRepositoryTests.ProjectToTests;
+namespace AppLibrary.Tests.LocalRepositoryTests.ProjectDerivedEntityTests;
 
 public class GetPagedListAndProject : TestsBase
 {
@@ -9,16 +9,17 @@ public class GetPagedListAndProject : TestsBase
     public async Task GetPagedList_ReturnsCorrectPagedResults()
     {
         // Arrange
-        var paging = new PaginatedRequest(2, 1, nameof(EntityWithChildProperty.Id));
-        var expected = TestData.OrderBy(entity => entity.Id).Skip(paging.Skip).Take(paging.Take).ToList();
+        var paging = new PaginatedRequest(2, 1, nameof(TestEntity.Id));
+        var expected = TestData.Where(e => e is EntityWithChildProperty)
+            .OrderBy(entity => entity.Id).Skip(paging.Skip).Take(paging.Take).ToList();
 
         // Act
-        var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
+        var result = await Repository.GetPagedListAsync<EntityDto, EntityWithChildProperty>(paging, Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        result.Should().BeEquivalentTo(Mapper!.Map<List<EntityDto>>(expected));
+        result.Should().BeEquivalentTo(expected);
     }
 
     [Test]
@@ -26,16 +27,14 @@ public class GetPagedListAndProject : TestsBase
     {
         // Arrange
         var paging = new PaginatedRequest(1, 10, nameof(EntityWithChildProperty.Id));
-        var expected = TestData[0];
+        var expected = (EntityWithChildProperty)TestData.First(e => e is EntityWithChildProperty);
 
         // Act
-        var result = await Repository.GetPagedListAsync<EntityDto>(e => e.Id == expected.Id, paging, Mapper!);
+        var result = await Repository.GetPagedListAsync<EntityDto, EntityWithChildProperty>(e => e.Id == expected.Id,
+            paging, Mapper!);
 
         // Assert
-        var entityDto = result.Single();
-        using var scope = new AssertionScope();
-        entityDto.Should().BeEquivalentTo(expected, options => options.Excluding(e => e.TextRecord));
-        entityDto.TextRecordText.Should().Be(expected.TextRecord.Text);
+        result.Single().Should().BeEquivalentTo(Mapper!.Map<EntityDto>(expected));
     }
 
     [Test]
@@ -46,7 +45,7 @@ public class GetPagedListAndProject : TestsBase
         var paging = new PaginatedRequest(1, 10, nameof(EntityDto.Id));
 
         // Act
-        var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
+        var result = await Repository.GetPagedListAsync<EntityDto, EntityWithChildProperty>(paging, Mapper!);
 
         // Assert
         result.Should().BeEmpty();
@@ -59,7 +58,7 @@ public class GetPagedListAndProject : TestsBase
         var paging = new PaginatedRequest(2, TestData.Count, nameof(EntityDto.Id));
 
         // Act
-        var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
+        var result = await Repository.GetPagedListAsync<EntityDto, EntityWithChildProperty>(paging, Mapper!);
 
         // Assert
         result.Should().BeEmpty();
@@ -69,31 +68,33 @@ public class GetPagedListAndProject : TestsBase
     public async Task GivenAscSorting_ReturnsAscSortedList()
     {
         // Arrange
-        var expected = TestData.OrderBy(entity => entity.Note).ToList();
-        var paging = new PaginatedRequest(1, expected.Count, nameof(EntityWithChildProperty.Note));
+        var expected = TestData.Where(e => e is EntityWithChildProperty)
+            .OrderBy(entity => entity.Note).ToList();
+        var paging = new PaginatedRequest(1, expected.Count, nameof(TestEntity.Note));
 
         // Act
-        var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
+        var result = await Repository.GetPagedListAsync<EntityDto, EntityWithChildProperty>(paging, Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        result.Should().BeEquivalentTo(Mapper!.Map<List<EntityDto>>(expected));
+        result.Should().BeEquivalentTo(expected);
     }
 
     [Test]
     public async Task GivenDescSorting_ReturnsDescSortedList()
     {
         // Arrange
-        var expected = TestData.OrderByDescending(entity => entity.Note).ToList();
+        var expected = TestData.Where(e => e is EntityWithChildProperty)
+            .OrderByDescending(entity => entity.Note).ToList();
         var paging = new PaginatedRequest(1, expected.Count, $"{nameof(EntityDto.Note)} desc");
 
         // Act
-        var result = await Repository.GetPagedListAsync<EntityDto>(paging, Mapper!);
+        var result = await Repository.GetPagedListAsync<EntityDto, EntityWithChildProperty>(paging, Mapper!);
 
         // Assert
         using var scope = new AssertionScope();
         result.Should().AllBeOfType<EntityDto>();
-        result.Should().BeEquivalentTo(Mapper!.Map<List<EntityDto>>(expected));
+        result.Should().BeEquivalentTo(expected);
     }
 }
