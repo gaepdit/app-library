@@ -14,6 +14,15 @@ public abstract partial class BaseRepositoryWithMapping<TEntity, TKey>
 
     public async Task<TDestination?> FindAsync<TDestination>(Expression<Func<TEntity, bool>> predicate, IMapper mapper,
         CancellationToken token = default) =>
-        await Task.FromResult(mapper.Map<TDestination?>(Items.SingleOrDefault(predicate.Compile())))
-            .ConfigureAwait(false);
+        await Task.FromResult(mapper.Map<TDestination?>(source: Items
+            .SingleOrDefault(predicate.Compile()))).ConfigureAwait(false);
+
+    public Task<TDestination?> FindAsync<TDestination, TSource>(TKey id, IMapper mapper,
+        CancellationToken token = default) where TSource : TEntity =>
+        FindAsync<TDestination, TSource>(source => source.Id.Equals(id), mapper, token);
+
+    public async Task<TDestination?> FindAsync<TDestination, TSource>(Expression<Func<TSource, bool>> predicate,
+        IMapper mapper, CancellationToken token = default) where TSource : TEntity =>
+        await Task.FromResult(mapper.Map<TDestination?>(source: Items.OfType<TSource>()
+            .SingleOrDefault(predicate.Compile()))).ConfigureAwait(false);
 }
