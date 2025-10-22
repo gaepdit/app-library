@@ -1,5 +1,15 @@
 # Changelog
 
+## [7.1.0] - 2025-09-29
+
+(All changes since version [7.0.0](#700---2025-08-07))
+
+- Added new overloads to the `FindAsync`, `GetListAsync`, and `GetPagedListAsync` methods in
+  `IReadRepositoryWithMapping`. These overloads take two type parameters and allow for projecting to a destination DTO
+  from a source entity which is itself a child derived from the base repository entity. I.e.,
+  `GetListAsync<TDestination, TSource>(...) where TSource : TEntity;` If your entities use inheritance, this greatly
+  simplifies mapping query results.
+
 ## [7.1.0-beta.2] - 2025-09-29
 
 - Added new overloads to the `FindAsync` and `GetPagedListAsync` methods in `IReadRepositoryWithMapping` similar to the
@@ -10,7 +20,7 @@
 - Added new overloads to the `GetListAsync` methods in `IReadRepositoryWithMapping`. These overloads take two type
   parameters and allow for projecting to a destination DTO from a source entity which is itself a child derived from the
   base repository entity. I.e., `GetListAsync<TDestination, TSource>(...) where TSource : TEntity;` If your entities use
-  inheritance, this greatly simplifies mapping query results
+  inheritance, this greatly simplifies mapping query results.
 
 ## [7.0.0] - 2025-08-07
 
