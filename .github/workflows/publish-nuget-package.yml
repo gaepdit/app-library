@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write # enable GitHub OIDC token issuance
 
 jobs:
   publish-app-library-nuget-package:
@@ -32,10 +33,15 @@ jobs:
       - name: Build and pack
         run: dotnet build ./src/AppLibrary/AppLibrary.csproj --configuration Release
 
+      # Get a short-lived NuGet API key
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: NuGet Push
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: dotnet nuget push .artifacts/AppLibrary/bin/Release/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push .artifacts/AppLibrary/bin/Release/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Create GitHub Release
         uses: anton-yurchenko/git-release@ec9c5b5c36b27eaffc628785b9183eae54601200
