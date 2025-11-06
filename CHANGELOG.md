@@ -255,3 +255,5 @@ _Initial release._
 [7.1.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.1
 
 [7.1.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.2
+
+[7.1.0]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0
