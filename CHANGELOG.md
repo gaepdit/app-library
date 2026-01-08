@@ -1,5 +1,9 @@
 # Changelog
 
+## [7.2.0] - 2026-01-08
+
+- Added support for .NET 10.
+
 ## [7.1.0] - 2025-09-29
 
 (All changes since version [7.0.0](#700---2025-08-07))
@@ -195,65 +199,36 @@
 _Initial release._
 
 [1.0.0]: https://github.com/gaepdit/app-library/releases/tag/v1.0.0
-
 [1.0.1]: https://github.com/gaepdit/app-library/releases/tag/v1.0.1
-
 [1.1.0]: https://github.com/gaepdit/app-library/releases/tag/v1.1.0
-
 [2.0.0]: https://github.com/gaepdit/app-library/releases/tag/v2.0.0
-
 [3.0.0]: https://github.com/gaepdit/app-library/releases/tag/v3.0.0
-
 [3.1.0]: https://github.com/gaepdit/app-library/releases/tag/v3.1.0
-
 [3.2.0]: https://github.com/gaepdit/app-library/releases/tag/v3.2.0
-
 [3.3.0]: https://github.com/gaepdit/app-library/releases/tag/v3.3.0
-
 [3.4.0]: https://github.com/gaepdit/app-library/releases/tag/v3.4.0
-
 [3.5.0]: https://github.com/gaepdit/app-library/releases/tag/v3.5.0
-
 [3.5.1]: https://github.com/gaepdit/app-library/releases/tag/v3.5.1
-
 [4.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.0.0
-
 [4.1.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv4.1.0
-
 [5.0.0]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.0
-
 [5.0.1]: https://github.com/gaepdit/app-library/releases/tag/al%2Fv5.0.1
-
 [5.1.0]: https://github.com/gaepdit/app-library/releases/tag/l%2Fv5.1.0
-
 [5.2.0]: https://github.com/gaepdit/app-library/releases/tag/v5.2.0
-
 [5.2.1]: https://github.com/gaepdit/app-library/releases/tag/v5.2.1
-
 [5.3.0]: https://github.com/gaepdit/app-library/releases/tag/v5.3.0
-
 [5.3.1]: https://github.com/gaepdit/app-library/releases/tag/v5.3.1
-
 [5.4.0]: https://github.com/gaepdit/app-library/releases/tag/v5.4.0
-
 [5.5.0]: https://github.com/gaepdit/app-library/releases/tag/v5.5.0
-
 [5.6.0]: https://github.com/gaepdit/app-library/releases/tag/v5.6.0
-
 [5.6.1]: https://github.com/gaepdit/app-library/releases/tag/v5.6.1
-
 [6.0.0]: https://github.com/gaepdit/app-library/releases/tag/v6.0.0
-
 [6.1.0]: https://github.com/gaepdit/app-library/releases/tag/v6.1.0
-
 [6.2.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.1
-
 [6.2.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v6.2.0-beta.2
-
 [7.0.0]: https://github.com/gaepdit/app-library/releases/tag/v7.0.0
-
 [7.1.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.1
-
 [7.1.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.2
-
 [7.1.0]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0
+
+[7.2.0]: https://github.com/gaepdit/app-library/releases/tag/v7.2.0
