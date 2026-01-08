@@ -9,10 +9,6 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  id-token: write # enable GitHub OIDC token issuance
-
 jobs:
   publish-app-library-nuget-package:
     # ↓ Change this to "false" to disable the workflow without any alert messages.
@@ -21,6 +17,10 @@ jobs:
 
     name: Publish App Library NuGet package
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # enable GitHub OIDC token issuance
+
     steps:
       - name: Check out repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
@@ -41,7 +41,7 @@ jobs:
           user: ${{ secrets.NUGET_USER }}
 
       - name: NuGet Push
-        run: dotnet nuget push .artifacts/AppLibrary/bin/Release/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push _artifacts/package/release/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Create GitHub Release
         uses: anton-yurchenko/git-release@ec9c5b5c36b27eaffc628785b9183eae54601200
