@@ -33,6 +33,20 @@ public class EnumExtensionTests
         input.GetDescription().Should().Be(output);
     }
 
+    [Test]
+    public void GivenEnumOutsideBounds_GetDisplayName_ReturnsString()
+    {
+        const EnumTest testEnum = (EnumTest)10;
+        testEnum.GetDisplayName().Should().Be("10");
+    }
+
+    [Test]
+    public void GivenEnumOutsideBounds_GetDescription_ReturnsString()
+    {
+        const EnumTest testEnum = (EnumTest)10;
+        testEnum.GetDescription().Should().Be("10");
+    }
+
     public enum EnumTest
     {
         None,
