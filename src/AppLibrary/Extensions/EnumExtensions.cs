@@ -23,7 +23,9 @@ public static class EnumExtensions
         where T : Attribute where TEnum : Enum
     {
         var type = enumValue.GetType();
-        var memInfo = type.GetMember(enumString)[0];
+        var memberInfo = type.GetMember(enumString);
+        if (memberInfo.Length == 0) return null;
+        var memInfo = memberInfo[0];
         var attributes = memInfo.GetCustomAttributes<T>(false);
         return attributes.FirstOrDefault();
     }
