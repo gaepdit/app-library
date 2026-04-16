@@ -1,5 +1,9 @@
 # Changelog
 
+## [7.2.1] - 2026-04-16
+
+- Updated NuGet packages.
+
 ## [7.2.0] - 2026-01-08
 
 - Added support for .NET 10.
@@ -230,5 +234,6 @@ _Initial release._
 [7.1.0-beta.1]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.1
 [7.1.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.2
 [7.1.0]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0
-
 [7.2.0]: https://github.com/gaepdit/app-library/releases/tag/v7.2.0
+
+[7.2.1]: https://github.com/gaepdit/app-library/releases/tag/v7.2.1
