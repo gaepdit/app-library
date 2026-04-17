@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="CHANGELOG.md" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="src/AppLibrary/AppLibrary.csproj" />
   <Project Path="tests/AppLibrary.Tests/AppLibrary.Tests.csproj" />
 </Solution>
