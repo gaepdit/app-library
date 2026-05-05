@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.2.2] - 2026-05-05
+
+- Updated NuGet packages. An explicit reference was added to the `System.Security.Cryptography.Xml` package in the unit
+  test project to avoid vulnerability warnings caused by `EfCore.TestSupport`, which implicitly references an older
+  version.
+
 ## [7.2.1] - 2026-04-16
 
 - Updated NuGet packages.
