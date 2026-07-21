@@ -177,6 +177,18 @@ create an HTML `<select>` element.
 `GetDisplayName()` and `GetDescription()` return the `DisplayAttribute.Name` and `DescriptionAttribute` values of an
 enum, respectively.
 
+### Razor data attributes
+
+- `MaxDate`: Specifies the maximum value for a date property.
+- `PositiveDecimal`: Specifies a minimum value of zero for a decimal property.
+- `PositiveShort`: Specifies a minimum value of zero for a short integer property.
+
+### Razor tag helpers
+
+- `InvalidClassTagHelper`: Adds the Bootstrap-compatible class `is-invalid` to invalid form elements.
+- `MaxDateTagHelper`: Sets the `max` attribute on input date HTML elements derived from properties with the `MaxDate`
+  attribute.
+
 ### Guard clauses
 
 The [GuardClauses](https://github.com/gaepdit/guard-clauses) package is included by reference.

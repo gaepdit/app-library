@@ -8,7 +8,7 @@ using System.Text.Encodings.Web;
 namespace GaEpd.AppLibrary.TagHelpers;
 
 /// <summary>
-/// This <see cref="ITagHelper"/> implementation adds the Bootstrap compatible class "is-invalid" to form elements
+/// This <see cref="ITagHelper"/> implementation adds the Bootstrap-compatible class "is-invalid" to form elements
 /// <c>input</c>, <c>select</c>, and <c>textarea</c> if they have already been marked as invalid with the ASP.NET
 /// default class "input-validation-error".
 /// </summary>

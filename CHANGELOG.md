@@ -1,5 +1,10 @@
 # Changelog
 
+## [7.3.0] - 2026-07-21
+
+- Included some common Razor data attributes and tag helpers.
+- Updated NuGet packages.
+
 ## [7.2.2] - 2026-05-05
 
 - Updated NuGet packages. An explicit reference was added to the `System.Security.Cryptography.Xml` package in the unit
