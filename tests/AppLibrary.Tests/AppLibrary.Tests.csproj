@@ -38,6 +38,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" />
         <PackageReference Include="System.Security.Cryptography.Xml" />
     </ItemGroup>
 
@@ -54,5 +55,9 @@
         <!-- https://github.com/JonPSmith/EfCore.TestSupport/issues/62 -->
         <Copy SourceFiles="appsettings.json" DestinationFolder="$(MSBuildThisFileDirectory)../../_artifacts" />
     </Target>
+
+    <ItemGroup>
+        <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-rvv3-g6hj-g44x" />
+    </ItemGroup>
 
 </Project>
