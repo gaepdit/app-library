@@ -1,5 +1,9 @@
 # Changelog
 
+## [7.3.1] - 2026-10-14
+
+- Updated dependencies.
+
 ## [7.3.0] - 2026-07-21
 
 - Included some common Razor data attributes and tag helpers.
@@ -246,5 +250,7 @@ _Initial release._
 [7.1.0-beta.2]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0-beta.2
 [7.1.0]: https://github.com/gaepdit/app-library/releases/tag/v7.1.0
 [7.2.0]: https://github.com/gaepdit/app-library/releases/tag/v7.2.0
-
 [7.2.1]: https://github.com/gaepdit/app-library/releases/tag/v7.2.1
+[7.2.2]: https://github.com/gaepdit/app-library/releases/tag/v7.2.2
+[7.3.0]: https://github.com/gaepdit/app-library/releases/tag/v7.3.0
+[7.3.1]: https://github.com/gaepdit/app-library/releases/tag/v7.3.1
